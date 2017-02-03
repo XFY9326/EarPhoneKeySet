@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">耳机按键设置</string>
+    <string name="service_describe">打开这个服务以允许三键耳机通过音量上下键控制音乐上一首或下一首。\n你同样需要授予ROOT权限。</string>
+	<string name="guide_title">请在使用前进行如下设置！</string>
+	<string name="guide_check">耳机按键校准</string>
+	<string name="guide_check_up">按下你耳机上用于增强音量的按键。</string>
+	<string name="guide_check_down">按下你耳机上用于减弱音量的按键。</string>
+	<string name="guide_check_error">你可能按错了按键</string>
+	<string name="guide_first_text">1.授予ROOT权限</string>
+	<string name="guide_second_text">2.运行辅助服务</string>
+	<string name="guide_first_text_button">授予</string>
+	<string name="guide_second_text_button">运行</string>
+	<string name="root_get">已获取ROOT权限</string>
+	<string name="service_run">辅助服务正在运行</string>
+	<string name="device_no_root">你必须首先ROOT你的设备！</string>
+	<string name="recorrect">重新校准耳机</string>
+	<string name="recorrect_error">请先关闭辅助服务！</string>
+	<string name="author">Made by XFY9326</string>
+</resources>
