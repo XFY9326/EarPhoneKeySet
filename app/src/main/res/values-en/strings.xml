@@ -16,5 +16,7 @@
 	<string name="device_no_root">You must root your device before you use it!</string>
 	<string name="recorrect">Recorrect EarPhone</string>
 	<string name="recorrect_error">Please close the AccessibilityService first.</string>
-	<string name="author">Made by XFY9326</string>
+	<string name="attention_title">Attentions</string>
+	<string name="attention_msg">1.When you close the screen, the physical key which control volume will change music instead.\n\n2.We will not change any files in System after being given ROOT Permission.</string>
+	<string name="author">Made by XFY9326\nhttps://github.com/XFY9326/EarPhoneKeySet</string>
 </resources>

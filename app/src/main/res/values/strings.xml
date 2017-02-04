@@ -16,5 +16,7 @@
 	<string name="device_no_root">你必须首先ROOT你的设备！</string>
 	<string name="recorrect">重新校准耳机</string>
 	<string name="recorrect_error">请先关闭辅助服务！</string>
-	<string name="author">Made by XFY9326</string>
+	<string name="attention_title">注意事项</string>
+	<string name="attention_msg">1.关闭屏幕时手机上控制音量的按键也只能控制音乐切换\n\n2.本应用获取ROOT权限后不会修改任何系统文件</string>
+	<string name="author">制作者 XFY9326\nhttps://github.com/XFY9326/EarPhoneKeySet</string>
 </resources>

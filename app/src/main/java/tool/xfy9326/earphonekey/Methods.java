@@ -1,12 +1,20 @@
 package tool.xfy9326.earphonekey;
 
+import android.app.*;
 import android.content.*;
 import android.provider.*;
 import java.io.*;
 
 public class Methods
 {
-	
+	public static void showAttention(Context ctx)
+	{
+		AlertDialog.Builder dialog = new AlertDialog.Builder(ctx);
+		dialog.setTitle(R.string.attention_title);
+		dialog.setMessage(R.string.attention_msg);
+		dialog.show();
+	}
+
 	public static void sendKeyCode(final int keyCode)
 	{
 		Thread t = new Thread(new Runnable()
@@ -50,7 +58,7 @@ public class Methods
 			});
 		t.start();
 	}
-	
+
 	public static boolean isAccessibilitySettingsOn(Context context)
 	{
         int accessibilityEnabled = 0;

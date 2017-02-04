@@ -97,6 +97,7 @@ public class GuideSetActivity extends Activity
 		Button root = (Button) findViewById(R.id.button_root);
 		Button service = (Button) findViewById(R.id.button_service);
 		Button recorrect = (Button) findViewById(R.id.button_recorrect);
+		Button attention = (Button) findViewById(R.id.button_attention);
 		TextView root_get = (TextView) findViewById(R.id.textview_root_get);
 		TextView service_run = (TextView) findViewById(R.id.textview_service_run);
 		if (Methods.haveRoot())
@@ -143,6 +144,12 @@ public class GuideSetActivity extends Activity
 							downcheck = false;
 							setEarPhoneDevice();
 						}
+					}
+				});
+			attention.setOnClickListener(new OnClickListener(){
+					public void onClick(View v)
+					{
+						Methods.showAttention(GuideSetActivity.this);
 					}
 				});
 		}

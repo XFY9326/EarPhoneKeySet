@@ -89,7 +89,8 @@
 		android:text="@string/author"
 		android:layout_alignParentBottom="true"
 		android:layout_centerHorizontal="true"
-		android:layout_marginBottom="5dp"/>
+		android:layout_marginBottom="5dp"
+		android:gravity="center"/>
 
 	<TextView
 		android:layout_height="wrap_content"
@@ -101,17 +102,35 @@
 		android:id="@+id/textview_describe"
 		android:layout_marginTop="10dp"/>
 
-	<Button
-		style="?android:attr/buttonStyleSmall"
+	<LinearLayout
 		android:layout_height="wrap_content"
 		android:layout_width="wrap_content"
 		android:layout_alignParentRight="false"
 		android:layout_alignParentBottom="false"
 		android:layout_below="@id/textview_describe"
-		android:id="@+id/button_recorrect"
-		android:text="@string/recorrect"
+		android:orientation="horizontal"
 		android:layout_centerHorizontal="true"
-		android:layout_marginTop="15dp"/>
+		android:layout_marginTop="15dp">
+
+		<Button
+			style="?android:attr/buttonStyleSmall"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:id="@+id/button_recorrect"
+			android:text="@string/recorrect"/>
+
+		<View
+			android:layout_height="match_parent"
+			android:layout_width="5dp"/>
+
+		<Button
+			style="?android:attr/buttonStyleSmall"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:id="@+id/button_attention"
+			android:text="@string/attention_title"/>
+
+	</LinearLayout>
 
 </RelativeLayout>
 
