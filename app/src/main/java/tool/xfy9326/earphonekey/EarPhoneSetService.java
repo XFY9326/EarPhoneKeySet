@@ -14,21 +14,19 @@ public class EarPhoneSetService extends AccessibilityService
 	private int scancode_down;
 	private int currentVolume;
 	private AudioManager mAudioManager;
-	private int maxVolume;
-	private boolean isDestroy;
-	private Thread volumeChangeThread;
 	private boolean mIsHeadSetPlugged;
-	private BroadcastReceiver mHeadSetReceiver;
-    private ScreenBroadcastReceiver mScreenReceiver;
+	private VolumeChangeReceiver mVolumeRecevier;
+	private HeadSetChangeReceiver mHeadSetReceiver;
+    private ScreenChangeReceiver mScreenReceiver;
 
 	@Override
 	public void onCreate()
 	{
-		mScreenReceiver = new ScreenBroadcastReceiver();
+		mScreenReceiver = new ScreenChangeReceiver();
+		mVolumeRecevier = new VolumeChangeReceiver();
+		mHeadSetReceiver = new HeadSetChangeReceiver();
 		mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-		maxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-		registerListener();
-		setEarPhoneListener();
+		registerScreenListener();
 		registerEarPhoneUse();
 		super.onCreate();
 	}
@@ -36,6 +34,8 @@ public class EarPhoneSetService extends AccessibilityService
 	@Override
 	protected void onServiceConnected()
 	{
+		mIsHeadSetPlugged = isHeadSetUse();
+		currentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
 		scancode_up = sp.getInt("KeyCode_UP", 0);
 		scancode_down = sp.getInt("KeyCode_DOWN", 0);
@@ -59,7 +59,7 @@ public class EarPhoneSetService extends AccessibilityService
 			{
 				if (keyaction == KeyEvent.ACTION_DOWN)
 				{
-					sendKeyCode(KeyEvent.KEYCODE_MEDIA_PREVIOUS);
+					Methods.sendKeyCode(KeyEvent.KEYCODE_MEDIA_PREVIOUS);
 				}
 				return true;
 			}
@@ -67,7 +67,7 @@ public class EarPhoneSetService extends AccessibilityService
 			{
 				if (keyaction == KeyEvent.ACTION_DOWN)
 				{
-					sendKeyCode(KeyEvent.KEYCODE_MEDIA_NEXT);
+					Methods.sendKeyCode(KeyEvent.KEYCODE_MEDIA_NEXT);
 				}
 				return true;
 			}
@@ -81,49 +81,20 @@ public class EarPhoneSetService extends AccessibilityService
 		return localAudioManager.isWiredHeadsetOn();
 	}
 
-	private void setAlarmListener()
+	private void registerAlarmListener()
 	{
-		isDestroy = false;
 		currentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-		volumeChangeThread = new Thread()
-		{
-			public void run()
-			{
-				while (!isDestroy)
-				{
-					try
-					{
-						Thread.sleep(20);
-					}
-					catch (InterruptedException e)
-					{
-						e.printStackTrace();
-					}
-					if (mIsHeadSetPlugged)
-					{
-						if (currentVolume < mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC))
-						{
-							sendKeyCode(KeyEvent.KEYCODE_MEDIA_PREVIOUS);
-							mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
-						}
-						if (currentVolume > mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC))
-						{
-							sendKeyCode(KeyEvent.KEYCODE_MEDIA_NEXT);
-							mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
-						}
-					}
-				}
-			};
-		};
-		volumeChangeThread.start();
+		IntentFilter fliter = new IntentFilter();
+		fliter.addAction("android.media.VOLUME_CHANGED_ACTION");
+		registerReceiver(mVolumeRecevier, fliter);
 	} 
 
-	private void closeAlarmListener()
+	private void unregisterAlarmListener()
 	{
-		isDestroy = true;
+		unregisterReceiver(mVolumeRecevier);
 	}
 
-	private void registerListener()
+	private void registerScreenListener()
 	{
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Intent.ACTION_SCREEN_ON);
@@ -131,33 +102,9 @@ public class EarPhoneSetService extends AccessibilityService
 		registerReceiver(mScreenReceiver, filter);
 	}
 
-	private void unregisterListener() 
+	private void unregisterScreenListener() 
 	{
 		unregisterReceiver(mScreenReceiver);
-	}
-
-	private void setEarPhoneListener()
-	{
-		mIsHeadSetPlugged = isHeadSetUse();
-		mHeadSetReceiver =  new BroadcastReceiver() {
-			@Override
-			public void onReceive(Context context, Intent intent)
-			{
-				if (intent.getAction().equals(Intent.ACTION_HEADSET_PLUG))
-				{
-					int state = intent.getIntExtra("state", -1);
-					switch (state)
-					{
-						case 0:
-							mIsHeadSetPlugged = false;
-							break;
-						case 1:
-							mIsHeadSetPlugged = true;
-							break;
-					}
-				}
-			}
-		};
 	}
 
 	private void registerEarPhoneUse()
@@ -172,50 +119,6 @@ public class EarPhoneSetService extends AccessibilityService
 		unregisterReceiver(mHeadSetReceiver);
 	}
 
-	private void sendKeyCode(final int keyCode)
-	{
-		Thread t = new Thread(new Runnable()
-			{
-				public void run()
-				{
-					Runtime r = null;
-					Process p = null;
-					DataOutputStream o = null;
-					String keyCommand = "input keyevent " + keyCode;
-					try
-					{
-						r = Runtime.getRuntime();
-						p = r.exec("su");
-						o = new DataOutputStream(p.getOutputStream());
-						o.writeBytes(keyCommand + "\n");
-						o.writeBytes("exit\n");
-						o.flush();
-						p.waitFor();
-					}
-					catch (Exception e)
-					{
-						e.printStackTrace();
-					}
-					finally
-					{
-						try
-						{
-							if (o != null)
-							{
-								o.close();
-							}
-							p.destroy();
-						}
-						catch (Exception e)
-						{
-							e.printStackTrace();
-						}
-					}
-				}
-			});
-		t.start();
-	}
-
 	@Override
 	public void onInterrupt()
 	{
@@ -224,25 +127,68 @@ public class EarPhoneSetService extends AccessibilityService
 	@Override
 	public void onDestroy()
 	{
-		isDestroy = true;
-		unregisterListener();
+		unregisterScreenListener();
 		unregisterEarPhoneUse();
 		super.onDestroy();
 	}
 
-	private class ScreenBroadcastReceiver extends BroadcastReceiver
+	private class HeadSetChangeReceiver extends BroadcastReceiver
 	{
 		@Override
 		public void onReceive(Context context, Intent intent)
 		{
-			String action = intent.getAction();
-			if (Intent.ACTION_SCREEN_ON.equals(action))
+			if (intent.getAction().equals(Intent.ACTION_HEADSET_PLUG))
 			{
-				closeAlarmListener();
+				int state = intent.getIntExtra("state", -1);
+				switch (state)
+				{
+					case 0:
+						mIsHeadSetPlugged = false;
+						break;
+					case 1:
+						mIsHeadSetPlugged = true;
+						break;
+				}
 			}
-			else if (Intent.ACTION_SCREEN_OFF.equals(action))
+		}
+	}
+
+	private class VolumeChangeReceiver extends BroadcastReceiver
+	{
+		@Override
+		public void onReceive(Context context, Intent intent)
+		{
+			if (intent.getAction().equals("android.media.VOLUME_CHANGED_ACTION"))
 			{
-				setAlarmListener();
+				if (mIsHeadSetPlugged)
+				{
+					if (currentVolume < mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC))
+					{
+						Methods.sendKeyCode(KeyEvent.KEYCODE_MEDIA_PREVIOUS);
+						mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
+					}
+					if (currentVolume > mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC))
+					{
+						Methods.sendKeyCode(KeyEvent.KEYCODE_MEDIA_NEXT);
+						mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
+					}
+				}
+			}
+		}
+	}
+
+	private class ScreenChangeReceiver extends BroadcastReceiver
+	{
+		@Override
+		public void onReceive(Context context, Intent intent)
+		{
+			if (Intent.ACTION_SCREEN_ON.equals(intent.getAction()))
+			{
+				unregisterAlarmListener();
+			}
+			else if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction()))
+			{
+				registerAlarmListener();
 			}
 		}
     }
