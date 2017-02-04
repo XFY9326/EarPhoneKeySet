@@ -67,7 +67,7 @@ public class GuideSetActivity extends Activity
 							}
 							else
 							{
-								Toast.makeText(GuideSetActivity.this, R.string.guide_check_error, Toast.LENGTH_SHORT).show();
+								Toast.makeText(GuideSetActivity.this, getString(R.string.guide_check_error) + KeyEvent.keyCodeToString(keyCode) + "(" + keyCode + ")", Toast.LENGTH_SHORT).show();
 							}
 						}
 						else if (upcheck && !downcheck)
@@ -82,7 +82,7 @@ public class GuideSetActivity extends Activity
 							}
 							else
 							{
-								Toast.makeText(GuideSetActivity.this, R.string.guide_check_error, Toast.LENGTH_SHORT).show();
+								Toast.makeText(GuideSetActivity.this, getString(R.string.guide_check_error) + KeyEvent.keyCodeToString(keyCode) + "(" + keyCode + ")", Toast.LENGTH_SHORT).show();
 							}
 						}
 					}

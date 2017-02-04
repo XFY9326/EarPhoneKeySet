@@ -6,7 +6,7 @@
 	<string name="guide_check">Correct Your EarPhone</string>
 	<string name="guide_check_up">Click the button on your earphone which means volume UP.</string>
 	<string name="guide_check_down">Click the button on your earphone which means volume DOWN.</string>
-	<string name="guide_check_error">You may click a wrong button.</string>
+	<string name="guide_check_error">You may click a wrong button.\nCurrent Key:</string>
 	<string name="guide_first_text">1.Give Root Premission</string>
 	<string name="guide_second_text">2.Run the AccessibilityService</string>
 	<string name="guide_first_text_button">Give</string>

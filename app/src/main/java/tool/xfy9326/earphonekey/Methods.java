@@ -2,11 +2,18 @@ package tool.xfy9326.earphonekey;
 
 import android.app.*;
 import android.content.*;
+import android.media.*;
 import android.provider.*;
 import java.io.*;
 
 public class Methods
 {
+	public static boolean isHeadSetUse(Context ctx)
+	{
+		AudioManager localAudioManager = (AudioManager) ctx.getSystemService(Context.AUDIO_SERVICE);
+		return localAudioManager.isWiredHeadsetOn();
+	}
+	
 	public static void showAttention(Context ctx)
 	{
 		AlertDialog.Builder dialog = new AlertDialog.Builder(ctx);
@@ -14,45 +21,68 @@ public class Methods
 		dialog.setMessage(R.string.attention_msg);
 		dialog.show();
 	}
+	
+	public static Process getRootProcess (Runtime r)
+	{
+		Process p;
+		try
+		{
+			p = r.exec("su");
+		}
+		catch (IOException e1)
+		{
+			e1.printStackTrace();
+			try
+			{
+				p = r.exec("");
+			}
+			catch (IOException e2)
+			{
+				e2.printStackTrace();
+				p = null;
+			}
+		}
+		return p;
+	}
+	
+	public static DataOutputStream getStream (Process p)
+	{
+		DataOutputStream o = new DataOutputStream(p.getOutputStream());
+		return o;
+	}
+	
+	public static void closeRuntime (Process p, DataOutputStream o)
+	{
+		try
+		{
+			if (o != null)
+			{
+				o.writeBytes("exit\n");
+				o.close();
+			}
+			p.destroy();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
 
-	public static void sendKeyCode(final int keyCode)
+	public static void sendKeyCode(final int keyCode, final Process p, final DataOutputStream o)
 	{
 		Thread t = new Thread(new Runnable()
 			{
 				public void run()
 				{
-					Runtime r = null;
-					Process p = null;
-					DataOutputStream o = null;
-					String keyCommand = "input keyevent " + keyCode;
 					try
 					{
-						r = Runtime.getRuntime();
-						p = r.exec("su");
-						o = new DataOutputStream(p.getOutputStream());
-						o.writeBytes(keyCommand + "\n");
-						o.writeBytes("exit\n");
+						o.writeBytes("input keyevent " + keyCode + "\n");
 						o.flush();
 						p.waitFor();
 					}
 					catch (Exception e)
 					{
 						e.printStackTrace();
-					}
-					finally
-					{
-						try
-						{
-							if (o != null)
-							{
-								o.close();
-							}
-							p.destroy();
-						}
-						catch (Exception e)
-						{
-							e.printStackTrace();
-						}
 					}
 				}
 			});

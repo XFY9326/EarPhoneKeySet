@@ -6,7 +6,7 @@
 	<string name="guide_check">耳机按键校准</string>
 	<string name="guide_check_up">按下你耳机上用于增强音量的按键。</string>
 	<string name="guide_check_down">按下你耳机上用于减弱音量的按键。</string>
-	<string name="guide_check_error">你可能按错了按键</string>
+	<string name="guide_check_error">你可能按错了按键\n当前按键：</string>
 	<string name="guide_first_text">1.授予ROOT权限</string>
 	<string name="guide_second_text">2.运行辅助服务</string>
 	<string name="guide_first_text_button">授予</string>

@@ -18,10 +18,16 @@ public class EarPhoneSetService extends AccessibilityService
 	private VolumeChangeReceiver mVolumeRecevier;
 	private HeadSetChangeReceiver mHeadSetReceiver;
     private ScreenChangeReceiver mScreenReceiver;
+	private Runtime runtime;
+	private Process process;
+	private DataOutputStream output;
 
 	@Override
 	public void onCreate()
 	{
+		runtime = Runtime.getRuntime();
+		process = Methods.getRootProcess(runtime);
+		output = Methods.getStream(process);
 		mScreenReceiver = new ScreenChangeReceiver();
 		mVolumeRecevier = new VolumeChangeReceiver();
 		mHeadSetReceiver = new HeadSetChangeReceiver();
@@ -34,7 +40,7 @@ public class EarPhoneSetService extends AccessibilityService
 	@Override
 	protected void onServiceConnected()
 	{
-		mIsHeadSetPlugged = isHeadSetUse();
+		mIsHeadSetPlugged = Methods.isHeadSetUse(this);
 		currentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
 		scancode_up = sp.getInt("KeyCode_UP", 0);
@@ -59,7 +65,7 @@ public class EarPhoneSetService extends AccessibilityService
 			{
 				if (keyaction == KeyEvent.ACTION_DOWN)
 				{
-					Methods.sendKeyCode(KeyEvent.KEYCODE_MEDIA_PREVIOUS);
+					Methods.sendKeyCode(KeyEvent.KEYCODE_MEDIA_PREVIOUS, process, output);
 				}
 				return true;
 			}
@@ -67,18 +73,12 @@ public class EarPhoneSetService extends AccessibilityService
 			{
 				if (keyaction == KeyEvent.ACTION_DOWN)
 				{
-					Methods.sendKeyCode(KeyEvent.KEYCODE_MEDIA_NEXT);
+					Methods.sendKeyCode(KeyEvent.KEYCODE_MEDIA_NEXT, process, output);
 				}
 				return true;
 			}
 		}
 		return super.onKeyEvent(event);
-	}
-
-	private boolean isHeadSetUse()
-	{
-		AudioManager localAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-		return localAudioManager.isWiredHeadsetOn();
 	}
 
 	private void registerAlarmListener()
@@ -127,6 +127,7 @@ public class EarPhoneSetService extends AccessibilityService
 	@Override
 	public void onDestroy()
 	{
+		Methods.closeRuntime(process, output);
 		unregisterScreenListener();
 		unregisterEarPhoneUse();
 		super.onDestroy();
@@ -164,12 +165,12 @@ public class EarPhoneSetService extends AccessibilityService
 				{
 					if (currentVolume < mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC))
 					{
-						Methods.sendKeyCode(KeyEvent.KEYCODE_MEDIA_PREVIOUS);
+						Methods.sendKeyCode(KeyEvent.KEYCODE_MEDIA_PREVIOUS, process, output);
 						mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
 					}
 					if (currentVolume > mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC))
 					{
-						Methods.sendKeyCode(KeyEvent.KEYCODE_MEDIA_NEXT);
+						Methods.sendKeyCode(KeyEvent.KEYCODE_MEDIA_NEXT, process, output);
 						mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
 					}
 				}
