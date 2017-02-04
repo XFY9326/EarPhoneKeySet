@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="tool.xfy9326.earphonekey" >
-
+	
+	<uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+		
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name">
@@ -17,6 +20,7 @@
 		<service
 			android:name="EarPhoneSetService"
 			android:label="@string/app_name"
+			android:persistent="true"
 			android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
 			<intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
