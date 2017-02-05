@@ -130,6 +130,17 @@
 			android:id="@+id/button_attention"
 			android:text="@string/attention_title"/>
 
+		<View
+			android:layout_height="match_parent"
+			android:layout_width="5dp"/>
+
+		<Button
+			style="?android:attr/buttonStyleSmall"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:id="@+id/button_advanced"
+			android:text="@string/advanced_button"/>
+		
 	</LinearLayout>
 
 </RelativeLayout>

@@ -1,0 +1,76 @@
+电话键
+键名 描述 键值
+
+    KEYCODE_CALL 拨号键 5
+    KEYCODE_ENDCALL 挂机键 6
+    KEYCODE_HOME 按键Home 3
+    KEYCODE_MENU 菜单键 82
+    KEYCODE_BACK 返回键 4
+    KEYCODE_SEARCH 搜索键 84
+    KEYCODE_CAMERA 拍照键 27
+    KEYCODE_FOCUS 拍照对焦键 80
+    KEYCODE_POWER 电源键 26
+    KEYCODE_NOTIFICATION 通知键 83
+    KEYCODE_MUTE 话筒静音键 91
+    KEYCODE_VOLUME_MUTE 扬声器静音键 164
+    KEYCODE_VOLUME_UP 音量增加键 24
+    KEYCODE_VOLUME_DOWN 音量减小键 25
+
+控制键
+键名 描述 键值
+
+    KEYCODE_ENTER 回车键 66
+    KEYCODE_ESCAPE ESC键 111
+    KEYCODE_DPAD_CENTER 导航键 确定键 23
+    KEYCODE_DPAD_UP 导航键 向上 19
+    KEYCODE_DPAD_DOWN 导航键 向下 20
+    KEYCODE_DPAD_LEFT 导航键 向左 21
+    KEYCODE_DPAD_RIGHT 导航键 向右 22
+    KEYCODE_MOVE_HOME 光标移动到开始键 122
+    KEYCODE_MOVE_END 光标移动到末尾键 123
+    KEYCODE_PAGE_UP 向上翻页键 92
+    KEYCODE_PAGE_DOWN 向下翻页键 93
+    KEYCODE_DEL 退格键 67
+    KEYCODE_FORWARD_DEL 删除键 112
+    KEYCODE_INSERT 插入键 124
+    KEYCODE_TAB Tab键 61
+    KEYCODE_NUM_LOCK 小键盘锁 143
+    KEYCODE_CAPS_LOCK 大写锁定键 115
+    KEYCODE_BREAK Break/Pause键 121
+    KEYCODE_SCROLL_LOCK 滚动锁定键 116
+    KEYCODE_ZOOM_IN 放大键 168
+    KEYCODE_ZOOM_OUT 缩小键 169
+
+多媒体键
+键名 描述
+键值
+
+    KEYCODE_MEDIA_PLAY 多媒体键 播放
+126
+    KEYCODE_MEDIA_STOP 多媒体键 停止
+86
+    KEYCODE_MEDIA_PAUSE 多媒体键 暂停
+127
+    KEYCODE_MEDIA_PLAY_PAUSE 多媒体键 播放/暂停
+85
+    KEYCODE_MEDIA_FAST_FORWARD 多媒体键 快进
+90
+    KEYCODE_MEDIA_REWIND 多媒体键 快退
+89
+    KEYCODE_MEDIA_NEXT 多媒体键 下一首
+87
+    KEYCODE_MEDIA_PREVIOUS 多媒体键 上一首
+88
+    KEYCODE_MEDIA_CLOSE 多媒体键 关闭
+128
+    KEYCODE_MEDIA_EJECT 多媒体键 弹出
+129
+    KEYCODE_MEDIA_RECORD 多媒体键 录音
+130
+
+
+自定义时直接输入键值即可
+本列表节选自CSDN。
+你可以在API文档中找到相应数值
+国内可用:http://www.android-doc.com/reference/android/view/KeyEvent.html
+更多按键信息请自行百度查阅。

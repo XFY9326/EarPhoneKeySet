@@ -18,5 +18,14 @@
 	<string name="recorrect_error">请先关闭辅助服务！</string>
 	<string name="attention_title">注意事项</string>
 	<string name="attention_msg">1.关闭屏幕时手机上控制音量的按键也只能控制音乐切换\n\n2.本应用获取ROOT权限后不会修改任何系统文件</string>
+	<string name="advanced_button">高级功能</string>
+	<string name="advanced_title">自定义耳机音量按键功能</string>
+	<string name="advanved_up">音量 +:</string>
+	<string name="advanced_down">音量 -:</string>
+	<string name="advanced_list">KeyCode列表</string>
+	<string name="advanced_wrong">KeyCode不能为空！</string>
+	<string name="done">确认</string>
+	<string name="cancel">取消</string>
+	<string name="reset">重置</string>
 	<string name="author">制作者 XFY9326\nhttps://github.com/XFY9326/EarPhoneKeySet</string>
 </resources>

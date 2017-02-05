@@ -3,17 +3,91 @@ package tool.xfy9326.earphonekey;
 import android.app.*;
 import android.content.*;
 import android.media.*;
+import android.preference.*;
 import android.provider.*;
+import android.view.*;
+import android.widget.*;
 import java.io.*;
 
 public class Methods
 {
+	public static void showAdvancedFuntion(final Context ctx)
+	{
+		LayoutInflater inflater = LayoutInflater.from(ctx);
+		View layout = inflater.inflate(R.layout.dialog_advance_keyset_layout, null);
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
+		final SharedPreferences.Editor sped = sp.edit();
+		final EditText up = (EditText) layout.findViewById(R.id.edittext_up_key);
+		final EditText down = (EditText) layout.findViewById(R.id.edittext_down_key);
+		up.setText(sp.getInt("CustomCode_UP", KeyEvent.KEYCODE_MEDIA_PREVIOUS) + "");
+		down.setText(sp.getInt("CustomCode_DOWN", KeyEvent.KEYCODE_MEDIA_NEXT) + "");
+		AlertDialog.Builder dialog = new AlertDialog.Builder(ctx);
+		dialog.setTitle(R.string.advanced_title);
+		dialog.setPositiveButton(R.string.done, new DialogInterface.OnClickListener(){
+				public void onClick(DialogInterface d, int i)
+				{
+					if (up.getText().toString().trim().equals("")|| down.getText().toString().trim().equals(""))
+					{
+						Toast.makeText(ctx, R.string.advanced_wrong, Toast.LENGTH_SHORT).show();
+					}
+					else
+					{
+						sped.putInt("CustomCode_UP", Integer.parseInt(up.getText().toString()));
+						sped.putInt("CustomCode_DOWN", Integer.parseInt(down.getText().toString()));
+						sped.commit();
+					}
+				}
+			});
+		dialog.setNegativeButton(R.string.reset, new DialogInterface.OnClickListener(){
+				public void onClick(DialogInterface d, int i)
+				{
+					sped.putInt("CustomCode_UP", KeyEvent.KEYCODE_MEDIA_PREVIOUS);
+					sped.putInt("CustomCode_DOWN", KeyEvent.KEYCODE_MEDIA_NEXT);
+					sped.commit();
+				}
+			});
+		dialog.setNeutralButton(R.string.advanced_list, new DialogInterface.OnClickListener(){
+				public void onClick(DialogInterface d, int i)
+				{
+					AlertDialog.Builder list = new AlertDialog.Builder(ctx);
+					list.setTitle(R.string.advanced_list);
+					String str = readAssets(ctx, "KeyCode.txt");
+					list.setMessage(str);
+					list.setPositiveButton(R.string.cancel, null);
+					list.show();
+				}
+			});
+		dialog.setView(layout);
+		dialog.show();
+	}
+
+	public static String readAssets(Context ctx, String path)
+	{
+		String result="";
+        try
+        {
+            InputStreamReader inputReader = new InputStreamReader(ctx.getResources().getAssets().open(path));
+            BufferedReader bufReader = new BufferedReader(inputReader);
+            String line="";
+            while ((line = bufReader.readLine()) != null)
+            {
+                result += line + "\n";
+            }
+        }
+        catch (IOException e)
+        {
+            result = "No Found";
+			e.printStackTrace();
+        }
+		return result;
+	}
+
 	public static boolean isHeadSetUse(Context ctx)
 	{
 		AudioManager localAudioManager = (AudioManager) ctx.getSystemService(Context.AUDIO_SERVICE);
 		return localAudioManager.isWiredHeadsetOn();
 	}
-	
+
 	public static void showAttention(Context ctx)
 	{
 		AlertDialog.Builder dialog = new AlertDialog.Builder(ctx);
@@ -21,8 +95,8 @@ public class Methods
 		dialog.setMessage(R.string.attention_msg);
 		dialog.show();
 	}
-	
-	public static Process getRootProcess (Runtime r)
+
+	public static Process getRootProcess(Runtime r)
 	{
 		Process p;
 		try
@@ -44,14 +118,14 @@ public class Methods
 		}
 		return p;
 	}
-	
-	public static DataOutputStream getStream (Process p)
+
+	public static DataOutputStream getStream(Process p)
 	{
 		DataOutputStream o = new DataOutputStream(p.getOutputStream());
 		return o;
 	}
-	
-	public static void closeRuntime (Process p, DataOutputStream o)
+
+	public static void closeRuntime(Process p, DataOutputStream o)
 	{
 		try
 		{

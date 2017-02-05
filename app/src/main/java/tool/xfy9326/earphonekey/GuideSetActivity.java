@@ -54,7 +54,7 @@ public class GuideSetActivity extends Activity
 				{
 					int keyCode = e.getKeyCode();
 					int action = e.getAction();
-					if (checkmode && action == KeyEvent.ACTION_UP && keyCode != KeyEvent.KEYCODE_BACK && keyCode != KeyEvent.KEYCODE_HOME && keyCode != KeyEvent.KEYCODE_MENU)
+					if (checkmode && action == KeyEvent.ACTION_UP)
 					{
 						if (!upcheck)
 						{
@@ -98,6 +98,7 @@ public class GuideSetActivity extends Activity
 		Button service = (Button) findViewById(R.id.button_service);
 		Button recorrect = (Button) findViewById(R.id.button_recorrect);
 		Button attention = (Button) findViewById(R.id.button_attention);
+		Button advanced = (Button) findViewById(R.id.button_advanced);
 		TextView root_get = (TextView) findViewById(R.id.textview_root_get);
 		TextView service_run = (TextView) findViewById(R.id.textview_service_run);
 		if (Methods.haveRoot())
@@ -150,6 +151,12 @@ public class GuideSetActivity extends Activity
 					public void onClick(View v)
 					{
 						Methods.showAttention(GuideSetActivity.this);
+					}
+				});
+			advanced.setOnClickListener(new OnClickListener(){
+					public void onClick(View v)
+					{
+						Methods.showAdvancedFuntion(GuideSetActivity.this);
 					}
 				});
 		}
