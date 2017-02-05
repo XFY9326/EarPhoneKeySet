@@ -255,4 +255,29 @@ public class Methods
             return -1;
         }
     }
+
+	public static int getKeyCodeUp(SharedPreferences sp)
+	{
+		return sp.getInt("CustomCode_UP", KeyEvent.KEYCODE_MEDIA_PREVIOUS);
+	}
+
+	public static int getKeyCodeDown(SharedPreferences sp)
+	{
+		return sp.getInt("CustomCode_DOWN", KeyEvent.KEYCODE_MEDIA_NEXT);
+	}
+
+	public static boolean getLongPressSend(SharedPreferences sp)
+	{
+		return sp.getBoolean("LongPress_Send", false);
+	}
+
+	public static boolean getLongPressGet(SharedPreferences sp)
+	{
+		return sp.getBoolean("LongPress_Get", false);
+	}
+
+	public static boolean getLongPressCustom(SharedPreferences sp)
+	{
+		return sp.getBoolean("LongPress_Custom", false);
+	}
 }
