@@ -3,10 +3,14 @@ package tool.xfy9326.earphonekey;
 import android.accessibilityservice.*;
 import android.content.*;
 import android.media.*;
+import android.os.*;
 import android.preference.*;
 import android.view.*;
 import android.view.accessibility.*;
 import java.io.*;
+
+import java.lang.Process;
+import android.util.*;
 
 public class EarPhoneSetService extends AccessibilityService
 {
@@ -22,6 +26,9 @@ public class EarPhoneSetService extends AccessibilityService
 	private Process process;
 	private DataOutputStream output;
 	private SharedPreferences sp;
+	private boolean LongPressed;
+	private Handler LongPressHandle;
+	private Thread LongPressThread;
 
 	@Override
 	public void onCreate()
@@ -29,12 +36,15 @@ public class EarPhoneSetService extends AccessibilityService
 		runtime = Runtime.getRuntime();
 		process = Methods.getRootProcess(runtime);
 		output = Methods.getStream(process);
+		LongPressed = false;
 		mScreenReceiver = new ScreenChangeReceiver();
 		mVolumeRecevier = new VolumeChangeReceiver();
 		mHeadSetReceiver = new HeadSetChangeReceiver();
 		mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+		sp = PreferenceManager.getDefaultSharedPreferences(this);
 		registerScreenListener();
 		registerEarPhoneUse();
+		setLongPressHandle();
 		super.onCreate();
 	}
 
@@ -43,7 +53,6 @@ public class EarPhoneSetService extends AccessibilityService
 	{
 		mIsHeadSetPlugged = Methods.isHeadSetUse(this);
 		currentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-		sp = PreferenceManager.getDefaultSharedPreferences(this);
 		scancode_up = sp.getInt("KeyCode_UP", 0);
 		scancode_down = sp.getInt("KeyCode_DOWN", 0);
 		super.onServiceConnected();
@@ -62,34 +71,118 @@ public class EarPhoneSetService extends AccessibilityService
 			int keycode = event.getKeyCode();
 			int scancode = event.getScanCode();
 			int keyaction = event.getAction();
+			boolean longpressmode = getLongPressGet();
 			if (keycode == KeyEvent.KEYCODE_VOLUME_UP && scancode == scancode_up)
 			{
 				if (keyaction == KeyEvent.ACTION_DOWN)
 				{
-					Methods.sendKeyCode(getKeyCodeUp(), process, output);
+					if (longpressmode)
+					{
+						if (event.getRepeatCount() == 0)
+						{
+							LongPressed = true;
+							setLongPressThread(1);
+						}
+					}
+					else
+					{
+						if (getLongPressCustom())
+						{
+							if (event.getRepeatCount() == 0)
+							{
+								LongPressed = true;
+								setLongPressThread(1);
+							}
+						}
+						else
+						{
+							Methods.sendKeyCode(getKeyCodeUp(), process, output, getLongPressSend());
+						}
+					}
+				}
+				else if (keyaction == KeyEvent.ACTION_UP && LongPressed)
+				{
+					LongPressed = false;
+					if (getLongPressCustom())
+					{
+						Methods.sendKeyCode(KeyEvent.KEYCODE_MEDIA_PREVIOUS, process, output, getLongPressSend());
+					}
+					else
+					{
+						Methods.sendKeyCode(KeyEvent.KEYCODE_VOLUME_UP, process, output, getLongPressSend());
+					}
 				}
 				return true;
 			}
-			if (keycode == KeyEvent.KEYCODE_VOLUME_DOWN && scancode == scancode_down)
+			else if (keycode == KeyEvent.KEYCODE_VOLUME_DOWN && scancode == scancode_down)
 			{
 				if (keyaction == KeyEvent.ACTION_DOWN)
 				{
-					Methods.sendKeyCode(getKeyCodeDown(), process, output);
+					if (longpressmode)
+					{
+						if (event.getRepeatCount() == 0)
+						{
+							LongPressed = true;
+							setLongPressThread(2);
+						}
+					}
+					else
+					{
+						if (getLongPressCustom())
+						{
+							if (event.getRepeatCount() == 0)
+							{
+								LongPressed = true;
+								setLongPressThread(2);
+							}
+						}
+						else
+						{
+							Methods.sendKeyCode(getKeyCodeDown(), process, output, getLongPressSend());
+						}
+					}
+				}
+				else if (keyaction == KeyEvent.ACTION_UP && LongPressed)
+				{
+					LongPressed = false;
+					if (getLongPressCustom())
+					{
+						Methods.sendKeyCode(KeyEvent.KEYCODE_MEDIA_NEXT, process, output, getLongPressSend());
+					}
+					else
+					{
+						Methods.sendKeyCode(KeyEvent.KEYCODE_VOLUME_DOWN, process, output, getLongPressSend());
+					}
 				}
 				return true;
 			}
 		}
 		return super.onKeyEvent(event);
 	}
-	
+
 	private int getKeyCodeUp()
 	{
 		return sp.getInt("CustomCode_UP", KeyEvent.KEYCODE_MEDIA_PREVIOUS);
 	}
-	
+
 	private int getKeyCodeDown()
 	{
 		return sp.getInt("CustomCode_DOWN", KeyEvent.KEYCODE_MEDIA_NEXT);
+	}
+
+	private boolean getLongPressSend()
+	{
+		return sp.getBoolean("LongPress_Send", false);
+	}
+
+	private boolean getLongPressGet()
+	{
+		return sp.getBoolean("LongPress_Get", false);
+	}
+
+	private boolean getLongPressCustom()
+	{
+		return sp.getBoolean("LongPress_Custom", false);
 	}
 
 	private void registerAlarmListener()
@@ -128,6 +221,54 @@ public class EarPhoneSetService extends AccessibilityService
 	private void unregisterEarPhoneUse()
 	{
 		unregisterReceiver(mHeadSetReceiver);
+	}
+
+	private void setLongPressThread(final int msg)
+	{
+		LongPressThread = new Thread(){
+			public void run()
+			{
+				super.run();
+				int i = 0;
+				while (LongPressed)
+				{
+					try
+					{
+						sleep(100);
+						i++;
+						if (i == 8)
+						{
+							LongPressHandle.sendEmptyMessage(msg);
+							LongPressed = false;
+							break;
+						}
+					}
+					catch (InterruptedException e)
+					{
+						e.printStackTrace();
+					}
+				}
+			}
+		};
+		LongPressThread.start();
+	}
+
+	private void setLongPressHandle()
+	{
+		LongPressHandle = new Handler(){
+			public void handleMessage(Message msg)
+			{
+				switch (msg.what)
+				{
+					case 1:
+						Methods.sendKeyCode(getKeyCodeUp(), process, output, getLongPressSend());
+						break;
+					case 2:
+						Methods.sendKeyCode(getKeyCodeDown(), process, output, getLongPressSend());
+						break;
+				}
+			}
+		};
 	}
 
 	@Override
@@ -176,12 +317,12 @@ public class EarPhoneSetService extends AccessibilityService
 				{
 					if (currentVolume < mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC))
 					{
-						Methods.sendKeyCode(getKeyCodeUp(), process, output);
+						Methods.sendKeyCode(getKeyCodeUp(), process, output, getLongPressSend());
 						mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
 					}
 					if (currentVolume > mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC))
 					{
-						Methods.sendKeyCode(getKeyCodeDown(), process, output);
+						Methods.sendKeyCode(getKeyCodeDown(), process, output, getLongPressSend());
 						mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
 					}
 				}
