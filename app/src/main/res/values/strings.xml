@@ -28,6 +28,8 @@
 	<string name="advanced_longpress_get">只对音量键物理长按作修改</string>
 	<string name="advanced_longpress_custom">自定义按键功能应用在物理长按按键\n（短按按键仍为切换歌曲）</string>
 	<string name="advanced_attention">注：物理长按按键的所有功能在熄屏时无效！</string>
+	<string name="earphone_nofound">请插入耳机进行操作！</string>
+	<string name="correct_device">在使用前请先设置耳机参数！</string>
 	<string name="done">确认</string>
 	<string name="cancel">取消</string>
 	<string name="reset">重置</string>

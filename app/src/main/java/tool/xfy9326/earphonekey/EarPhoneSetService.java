@@ -10,6 +10,7 @@ import android.view.accessibility.*;
 import java.io.*;
 
 import java.lang.Process;
+import android.widget.*;
 
 public class EarPhoneSetService extends AccessibilityService
 {
@@ -62,96 +63,100 @@ public class EarPhoneSetService extends AccessibilityService
 	{
 		if (Methods.isHeadSetUse(this))
 		{
-			int keycode = event.getKeyCode();
-			int scancode = event.getScanCode();
-			int keyaction = event.getAction();
-			boolean longpressmode = Methods.getLongPressGet(sp);
-			if (keycode == KeyEvent.KEYCODE_VOLUME_UP && scancode == scancode_up)
+			if (scancode_up != 0 && scancode_down != 0)
 			{
-				if (keyaction == KeyEvent.ACTION_DOWN)
+				int keycode = event.getKeyCode();
+				int scancode = event.getScanCode();
+				int keyaction = event.getAction();
+				boolean longpressmode = Methods.getLongPressGet(sp);
+				if (keycode == KeyEvent.KEYCODE_VOLUME_UP && scancode == scancode_up)
 				{
-					if (longpressmode)
+					if (keyaction == KeyEvent.ACTION_DOWN)
 					{
-						if (event.getRepeatCount() == 0)
-						{
-							LongPressed = true;
-							setLongPressThread(1);
-						}
+						KeyUpAction(event, longpressmode, 1);
 					}
-					else
+					else if (keyaction == KeyEvent.ACTION_UP && LongPressed)
 					{
+						LongPressed = false;
 						if (Methods.getLongPressCustom(sp))
 						{
-							if (event.getRepeatCount() == 0)
-							{
-								LongPressed = true;
-								setLongPressThread(1);
-							}
+							Methods.sendKeyCode(KeyEvent.KEYCODE_MEDIA_PREVIOUS, process, output, Methods.getLongPressSend(sp));
 						}
 						else
 						{
-							Methods.sendKeyCode(Methods.getKeyCodeUp(sp), process, output, Methods.getLongPressSend(sp));
+							Methods.sendKeyCode(KeyEvent.KEYCODE_VOLUME_UP, process, output, Methods.getLongPressSend(sp));
 						}
 					}
+					return true;
 				}
-				else if (keyaction == KeyEvent.ACTION_UP && LongPressed)
+				else if (keycode == KeyEvent.KEYCODE_VOLUME_DOWN && scancode == scancode_down)
 				{
-					LongPressed = false;
-					if (Methods.getLongPressCustom(sp))
+					if (keyaction == KeyEvent.ACTION_DOWN)
 					{
-						Methods.sendKeyCode(KeyEvent.KEYCODE_MEDIA_PREVIOUS, process, output, Methods.getLongPressSend(sp));
+						KeyUpAction(event, longpressmode, 2);
 					}
-					else
+					else if (keyaction == KeyEvent.ACTION_UP && LongPressed)
 					{
-						Methods.sendKeyCode(KeyEvent.KEYCODE_VOLUME_UP, process, output, Methods.getLongPressSend(sp));
+						LongPressed = false;
+						if (Methods.getLongPressCustom(sp))
+						{
+							Methods.sendKeyCode(KeyEvent.KEYCODE_MEDIA_NEXT, process, output, Methods.getLongPressSend(sp));
+						}
+						else
+						{
+							Methods.sendKeyCode(KeyEvent.KEYCODE_VOLUME_DOWN, process, output, Methods.getLongPressSend(sp));
+						}
 					}
+					return true;
+
 				}
-				return true;
 			}
-			else if (keycode == KeyEvent.KEYCODE_VOLUME_DOWN && scancode == scancode_down)
+			else
 			{
-				if (keyaction == KeyEvent.ACTION_DOWN)
-				{
-					if (longpressmode)
-					{
-						if (event.getRepeatCount() == 0)
-						{
-							LongPressed = true;
-							setLongPressThread(2);
-						}
-					}
-					else
-					{
-						if (Methods.getLongPressCustom(sp))
-						{
-							if (event.getRepeatCount() == 0)
-							{
-								LongPressed = true;
-								setLongPressThread(2);
-							}
-						}
-						else
-						{
-							Methods.sendKeyCode(Methods.getKeyCodeDown(sp), process, output, Methods.getLongPressSend(sp));
-						}
-					}
-				}
-				else if (keyaction == KeyEvent.ACTION_UP && LongPressed)
-				{
-					LongPressed = false;
-					if (Methods.getLongPressCustom(sp))
-					{
-						Methods.sendKeyCode(KeyEvent.KEYCODE_MEDIA_NEXT, process, output, Methods.getLongPressSend(sp));
-					}
-					else
-					{
-						Methods.sendKeyCode(KeyEvent.KEYCODE_VOLUME_DOWN, process, output, Methods.getLongPressSend(sp));
-					}
-				}
-				return true;
+				Toast.makeText(this, R.string.correct_device, Toast.LENGTH_SHORT).show();
 			}
 		}
-		return super.onKeyEvent(event);
+		return false;
+	}
+
+	private void KeyUpAction(KeyEvent event, boolean longpressmode, int type)
+	{
+		if (longpressmode)
+		{
+			if (event.getRepeatCount() == 0)
+			{
+				LongPressed = true;
+				setLongPressThread(type);
+			}
+		}
+		else
+		{
+			if (Methods.getLongPressCustom(sp))
+			{
+				if (event.getRepeatCount() == 0)
+				{
+					LongPressed = true;
+					setLongPressThread(type);
+				}
+			}
+			else
+			{
+				int code;
+				if (type == 2)
+				{
+					code = Methods.getKeyCodeDown(sp);
+				}
+				else if (type == 1)
+				{
+					code = Methods.getKeyCodeUp(sp);
+				}
+				else
+				{
+					code = 0;
+				}
+				Methods.sendKeyCode(code, process, output, Methods.getLongPressSend(sp));
+			}
+		}
 	}
 
 	private void registerListener()

@@ -28,6 +28,8 @@
 	<string name="advanced_longpress_get">Only Change When You Long Pressed Physical Button</string>
 	<string name="advanced_longpress_custom">Custom Event Work When Long Press\n(Short Press Will Still Change Music)</string>
 	<string name="advanced_attention">Attention:The Long Press Button Function Can Not Use When You Close Screen!</string>
+	<string name="earphone_nofound">Please insert your earphone before setting!</string>
+	<string name="correct_device">Please set earphone device before use!</string>
 	<string name="done">Done</string>
 	<string name="cancel">Cancel</string>
 	<string name="reset">Reset</string>

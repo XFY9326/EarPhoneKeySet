@@ -33,22 +33,31 @@ public class GuideSetActivity extends Activity
 			checkmode = true;
 			upcheck = false;
 			downcheck = false;
-			setEarPhoneDevice();
+			setEarPhoneDevice(false);
 		}
 		setView();
 	}
 
-	private void setEarPhoneDevice()
+	private void setEarPhoneDevice(boolean allowcancel)
 	{
 		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 		dialog.setTitle(R.string.guide_check);
 		final TextView notice = new TextView(this);
 		notice.setText(R.string.guide_check_up);
-		notice.setPadding(30, 90, 30, 90);
-		notice.setTextSize(18.5f);
+		notice.setPadding(60, 90, 30, 50);
+		notice.setTextSize(18);
 		notice.setGravity(Gravity.FILL_HORIZONTAL);
 		dialog.setView(notice);
 		dialog.setCancelable(false);
+		if (allowcancel)
+		{
+			dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
+					public void onClick(DialogInterface d, int i)
+					{
+						check.dismiss();
+					}
+				});
+		}
 		dialog.setOnKeyListener(new DialogInterface.OnKeyListener(){
 				public boolean onKey(DialogInterface d, int i, KeyEvent e)
 				{
@@ -56,34 +65,41 @@ public class GuideSetActivity extends Activity
 					int action = e.getAction();
 					if (checkmode && action == KeyEvent.ACTION_UP)
 					{
-						if (!upcheck)
+						if (Methods.isHeadSetUse(GuideSetActivity.this))
 						{
-							if (keyCode == KeyEvent.KEYCODE_VOLUME_UP)
+							if (!upcheck)
 							{
-								sped.putInt("KeyCode_UP", e.getScanCode());
-								sped.commit();
-								upcheck = true;
-								notice.setText(R.string.guide_check_down);
+								if (keyCode == KeyEvent.KEYCODE_VOLUME_UP)
+								{
+									sped.putInt("KeyCode_UP", e.getScanCode());
+									sped.commit();
+									upcheck = true;
+									notice.setText(R.string.guide_check_down);
+								}
+								else
+								{
+									Toast.makeText(GuideSetActivity.this, getString(R.string.guide_check_error) + KeyEvent.keyCodeToString(keyCode) + "(" + keyCode + ")", Toast.LENGTH_SHORT).show();
+								}
 							}
-							else
+							else if (upcheck && !downcheck)
 							{
-								Toast.makeText(GuideSetActivity.this, getString(R.string.guide_check_error) + KeyEvent.keyCodeToString(keyCode) + "(" + keyCode + ")", Toast.LENGTH_SHORT).show();
+								if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)
+								{
+									sped.putInt("KeyCode_DOWN", e.getScanCode());
+									sped.putBoolean("CheckEarPhone", true);
+									sped.commit();
+									downcheck = true;
+									check.dismiss();
+								}
+								else
+								{
+									Toast.makeText(GuideSetActivity.this, getString(R.string.guide_check_error) + KeyEvent.keyCodeToString(keyCode) + "(" + keyCode + ")", Toast.LENGTH_SHORT).show();
+								}
 							}
 						}
-						else if (upcheck && !downcheck)
+						else
 						{
-							if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)
-							{
-								sped.putInt("KeyCode_DOWN", e.getScanCode());
-								sped.putBoolean("CheckEarPhone", true);
-								sped.commit();
-								downcheck = true;
-								check.dismiss();
-							}
-							else
-							{
-								Toast.makeText(GuideSetActivity.this, getString(R.string.guide_check_error) + KeyEvent.keyCodeToString(keyCode) + "(" + keyCode + ")", Toast.LENGTH_SHORT).show();
-							}
+							Toast.makeText(GuideSetActivity.this, R.string.earphone_nofound, Toast.LENGTH_SHORT).show();
 						}
 					}
 					return true;
@@ -143,7 +159,7 @@ public class GuideSetActivity extends Activity
 							checkmode = true;
 							upcheck = false;
 							downcheck = false;
-							setEarPhoneDevice();
+							setEarPhoneDevice(true);
 						}
 					}
 				});
