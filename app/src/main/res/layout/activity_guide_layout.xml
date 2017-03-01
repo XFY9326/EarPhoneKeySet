@@ -37,14 +37,14 @@
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
 			android:text="@string/guide_first_text_button"
-			android:id="@+id/button_root"/>
+			android:id="@+id/button_service"/>
 
 		<TextView
 			android:layout_height="wrap_content"
 			android:textAppearance="?android:attr/textAppearanceSmall"
 			android:layout_width="wrap_content"
-			android:text="@string/root_get"
-			android:id="@+id/textview_root_get"/>
+			android:text="@string/service_run"
+			android:id="@+id/textview_service_run"/>
 
 	</LinearLayout>
 
@@ -71,14 +71,7 @@
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
 			android:text="@string/guide_second_text_button"
-			android:id="@+id/button_service"/>
-
-		<TextView
-			android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceSmall"
-			android:layout_width="wrap_content"
-			android:text="@string/service_run"
-			android:id="@+id/textview_service_run"/>
+			android:id="@+id/button_root"/>
 
 	</LinearLayout>
 
@@ -140,7 +133,7 @@
 			android:layout_width="wrap_content"
 			android:id="@+id/button_advanced"
 			android:text="@string/advanced_button"/>
-		
+
 	</LinearLayout>
 
 </RelativeLayout>

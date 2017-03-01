@@ -1,16 +1,17 @@
 package tool.xfy9326.earphonekey;
 
-import android.accessibilityservice.*;
 import android.content.*;
-import android.media.*;
 import android.os.*;
-import android.preference.*;
-import android.view.*;
-import android.view.accessibility.*;
-import java.io.*;
 
+import android.accessibilityservice.AccessibilityService;
+import android.media.AudioManager;
+import android.preference.PreferenceManager;
+import android.telephony.TelephonyManager;
+import android.view.KeyEvent;
+import android.view.accessibility.AccessibilityEvent;
+import android.widget.Toast;
+import java.io.DataOutputStream;
 import java.lang.Process;
-import android.widget.*;
 
 public class EarPhoneSetService extends AccessibilityService
 {
@@ -43,13 +44,20 @@ public class EarPhoneSetService extends AccessibilityService
 	@Override
 	protected void onServiceConnected()
 	{
-		currentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 		registerListener();
 		runtime = Runtime.getRuntime();
-		process = Methods.getRootProcess(runtime);
+		if (sp.getBoolean("AdvancedFunctionOn", false))
+		{
+			process = Methods.getRootProcess(runtime);
+		}
+		else
+		{
+			process = null;
+		}
 		output = Methods.getStream(process);
 		scancode_up = sp.getInt("KeyCode_UP", 0);
 		scancode_down = sp.getInt("KeyCode_DOWN", 0);
+		currentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 		super.onServiceConnected();
 	}
 
@@ -59,9 +67,29 @@ public class EarPhoneSetService extends AccessibilityService
 	}
 
 	@Override
+	public int onStartCommand(Intent intent, int flags, int startId)
+	{
+		if (intent != null)
+		{
+			if (intent.getBooleanExtra("ProcessChange", false))
+			{
+				if (sp.getBoolean("AdvancedFunctionOn", false))
+				{
+					process = Methods.getRootProcess(runtime);
+				}
+				else
+				{
+					process = null;
+				}
+			}
+		}
+		return super.onStartCommand(intent, flags, startId);
+	}
+	
+	@Override
 	protected boolean onKeyEvent(KeyEvent event)
 	{
-		if (Methods.isHeadSetUse(this))
+		if (Methods.isHeadSetUse(this) && !isCalling())
 		{
 			if (scancode_up != 0 && scancode_down != 0)
 			{
@@ -80,11 +108,11 @@ public class EarPhoneSetService extends AccessibilityService
 						LongPressed = false;
 						if (Methods.getLongPressCustom(sp))
 						{
-							Methods.sendKeyCode(KeyEvent.KEYCODE_MEDIA_PREVIOUS, process, output, Methods.getLongPressSend(sp));
+							Methods.sendKeyCode(this, true, KeyEvent.KEYCODE_MEDIA_PREVIOUS, process, output, Methods.getLongPressSend(sp));
 						}
 						else
 						{
-							Methods.sendKeyCode(KeyEvent.KEYCODE_VOLUME_UP, process, output, Methods.getLongPressSend(sp));
+							Methods.sendKeyCode(this, true, KeyEvent.KEYCODE_VOLUME_UP, process, output, Methods.getLongPressSend(sp));
 						}
 					}
 					return true;
@@ -100,11 +128,11 @@ public class EarPhoneSetService extends AccessibilityService
 						LongPressed = false;
 						if (Methods.getLongPressCustom(sp))
 						{
-							Methods.sendKeyCode(KeyEvent.KEYCODE_MEDIA_NEXT, process, output, Methods.getLongPressSend(sp));
+							Methods.sendKeyCode(this, true, KeyEvent.KEYCODE_MEDIA_NEXT, process, output, Methods.getLongPressSend(sp));
 						}
 						else
 						{
-							Methods.sendKeyCode(KeyEvent.KEYCODE_VOLUME_DOWN, process, output, Methods.getLongPressSend(sp));
+							Methods.sendKeyCode(this, true, KeyEvent.KEYCODE_VOLUME_DOWN, process, output, Methods.getLongPressSend(sp));
 						}
 					}
 					return true;
@@ -154,7 +182,7 @@ public class EarPhoneSetService extends AccessibilityService
 				{
 					code = 0;
 				}
-				Methods.sendKeyCode(code, process, output, Methods.getLongPressSend(sp));
+				Methods.sendKeyCode(this, true, code, process, output, Methods.getLongPressSend(sp));
 			}
 		}
 	}
@@ -211,14 +239,31 @@ public class EarPhoneSetService extends AccessibilityService
 				switch (msg.what)
 				{
 					case 1:
-						Methods.sendKeyCode(Methods.getKeyCodeUp(sp), process, output, Methods.getLongPressSend(sp));
+						Methods.sendKeyCode(EarPhoneSetService.this, true, Methods.getKeyCodeUp(sp), process, output, Methods.getLongPressSend(sp));
 						break;
 					case 2:
-						Methods.sendKeyCode(Methods.getKeyCodeDown(sp), process, output, Methods.getLongPressSend(sp));
+						Methods.sendKeyCode(EarPhoneSetService.this, true, Methods.getKeyCodeDown(sp), process, output, Methods.getLongPressSend(sp));
 						break;
 				}
 			}
 		};
+	}
+
+	private boolean isCalling()
+	{
+		TelephonyManager telephonyService = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+		if (telephonyService != null)
+		{
+			if (telephonyService.getCallState() == TelephonyManager.CALL_STATE_IDLE)
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -245,16 +290,16 @@ public class EarPhoneSetService extends AccessibilityService
 			}
 			else if (!ScreenOn && action.equals("android.media.VOLUME_CHANGED_ACTION"))
 			{
-				if (Methods.isHeadSetUse(context))
+				if (Methods.isHeadSetUse(context) && !isCalling())
 				{
 					if (currentVolume < mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC))
 					{
-						Methods.sendKeyCode(Methods.getKeyCodeUp(sp), process, output, Methods.getLongPressSend(sp));
+						Methods.sendKeyCode(EarPhoneSetService.this, true, Methods.getKeyCodeUp(sp), process, output, Methods.getLongPressSend(sp));
 						mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
 					}
 					if (currentVolume > mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC))
 					{
-						Methods.sendKeyCode(Methods.getKeyCodeDown(sp), process, output, Methods.getLongPressSend(sp));
+						Methods.sendKeyCode(EarPhoneSetService.this, true, Methods.getKeyCodeDown(sp), process, output, Methods.getLongPressSend(sp));
 						mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
 					}
 				}

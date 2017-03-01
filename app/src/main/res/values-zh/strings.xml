@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">耳机按键设置</string>
+    <string name="service_describe">打开这个服务以允许三键耳机通过音量上下键控制音乐上一首或下一首。\n高级功能需要授予ROOT权限。</string>
+	<string name="guide_title">请在使用前进行如下设置！</string>
+	<string name="guide_check">耳机按键校准</string>
+	<string name="guide_check_up">按下你耳机上用于增强音量的按键。</string>
+	<string name="guide_check_down">按下你耳机上用于减弱音量的按键。</string>
+	<string name="guide_check_error">你可能按错了按键\n当前按键：</string>
+	<string name="guide_first_text">必须：运行辅助服务</string>
+	<string name="guide_second_text">可选：授予ROOT权限</string>
+	<string name="guide_first_text_button">运行</string>
+	<string name="guide_second_text_button">授予</string>
+	<string name="service_run">辅助服务正在运行</string>
+	<string name="device_no_root">你必须首先ROOT你的设备！</string>
+	<string name="recorrect">重新校准耳机</string>
+	<string name="recorrect_error">请先关闭辅助服务！</string>
+	<string name="attention_title">注意事项</string>
+	<string name="attention_msg">1.关闭屏幕时手机上控制音量的按键也只能控制音乐切换\n\n2.本应用获取ROOT权限后不会修改任何系统文件</string>
+	<string name="advanced_button">高级功能</string>
+	<string name="advanced_title">自定义耳机音量按键功能</string>
+	<string name="advanved_up">音量 + :</string>
+	<string name="advanced_down">音量 - :</string>
+	<string name="advanced_list">KeyCode列表</string>
+	<string name="advanced_wrong">KeyCode不能为空！</string>
+	<string name="advanced_longpress_send">模拟长按事件</string>
+	<string name="advanced_longpress_get">只对音量键物理长按作修改</string>
+	<string name="advanced_longpress_custom">自定义按键功能应用在物理长按按键\n（短按按键仍为切换歌曲）</string>
+	<string name="advanced_attention">注：物理长按按键的所有功能在熄屏时无效！</string>
+	<string name="earphone_nofound">请插入耳机进行操作！</string>
+	<string name="correct_device">在使用前请先设置耳机参数！</string>
+	<string name="done">确认</string>
+	<string name="cancel">取消</string>
+	<string name="reset">重置</string>
+	<string name="author">制作者 XFY9326\nhttps://github.com/XFY9326/EarPhoneKeySet</string>
+</resources>

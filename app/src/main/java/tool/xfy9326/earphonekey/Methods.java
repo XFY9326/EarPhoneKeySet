@@ -1,13 +1,14 @@
 package tool.xfy9326.earphonekey;
 
-import android.app.*;
 import android.content.*;
-import android.media.*;
-import android.preference.*;
-import android.provider.*;
 import android.view.*;
 import android.widget.*;
 import java.io.*;
+
+import android.app.AlertDialog;
+import android.media.AudioManager;
+import android.preference.PreferenceManager;
+import android.provider.Settings;
 
 public class Methods
 {
@@ -115,15 +116,7 @@ public class Methods
 		catch (IOException e1)
 		{
 			e1.printStackTrace();
-			try
-			{
-				p = r.exec("");
-			}
-			catch (IOException e2)
-			{
-				e2.printStackTrace();
-				p = null;
-			}
+			p = null;
 		}
 		return p;
 	}
@@ -151,34 +144,57 @@ public class Methods
 		}
 	}
 
-	public static void sendKeyCode(final int keyCode, final Process p, final DataOutputStream o, final boolean longpress)
+	public static void sendKeyCode(Context ctx, boolean fastcontrol, final int keyCode, final Process p, final DataOutputStream o, final boolean longpress)
 	{
-		Thread t = new Thread(new Runnable()
+		if (fastcontrol && keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS && !longpress)
+		{
+			MediaButtonControl(ctx, KeyEvent.KEYCODE_MEDIA_PREVIOUS);
+		}
+		else if (fastcontrol && keyCode == KeyEvent.KEYCODE_MEDIA_NEXT && !longpress)
+		{
+			MediaButtonControl(ctx, KeyEvent.KEYCODE_MEDIA_NEXT);
+		}
+		else
+		{
+			if (p != null)
 			{
-				public void run()
-				{
-					try
+				Thread t = new Thread(new Runnable()
 					{
-						String str = "";
-						if (longpress)
+						public void run()
 						{
-							str = "input keyevent --longpress ";
+							try
+							{
+								String str = "";
+								if (longpress)
+								{
+									str = "input keyevent --longpress ";
+								}
+								else
+								{
+									str = "input keyevent ";
+								}
+								o.writeBytes(str + keyCode + "\n");
+								o.flush();
+								p.waitFor();
+							}
+							catch (Exception e)
+							{
+								e.printStackTrace();
+							}
 						}
-						else
-						{
-							str = "input keyevent ";
-						}
-						o.writeBytes(str + keyCode + "\n");
-						o.flush();
-						p.waitFor();
-					}
-					catch (Exception e)
-					{
-						e.printStackTrace();
-					}
-				}
-			});
-		t.start();
+					});
+				t.start();
+			}
+		}
+	}
+
+	private static void MediaButtonControl(Context ctx, int Keycode)
+	{
+		KeyEvent ky_down = new KeyEvent(KeyEvent.ACTION_DOWN , Keycode);
+		KeyEvent ky_up = new KeyEvent(KeyEvent.ACTION_UP , Keycode);
+		AudioManager am = (AudioManager) ctx.getSystemService(ctx.AUDIO_SERVICE);
+		am.dispatchMediaKeyEvent(ky_down);
+		am.dispatchMediaKeyEvent(ky_up);
 	}
 
 	public static boolean isAccessibilitySettingsOn(Context context)
@@ -205,16 +221,15 @@ public class Methods
 
 	public static boolean isRoot()
 	{
-		Process process;
 		try
 		{
-			process  = Runtime.getRuntime().exec("su");
+			Process process  = Runtime.getRuntime().exec("su");
 			process.getOutputStream().write("exit\n".getBytes());
 			process.getOutputStream().flush();
 			int i = process.waitFor();
-			if (0 == i)
+			if (i == 0)
 			{
-				process = Runtime.getRuntime().exec("su");
+				Runtime.getRuntime().exec("su");
 				return true;
 			}
 		}
@@ -224,37 +239,6 @@ public class Methods
 		}
 		return false;
 	}
-
-	public static boolean haveRoot()
-	{
-		int i = execRootCmdSilent("echo test");
-		if (i != -1)  return true;
-		return false;
-	}
-
-	private static int execRootCmdSilent(String paramString)
-	{
-        try
-		{
-            Process localProcess = Runtime.getRuntime().exec("su");
-            Object localObject = localProcess.getOutputStream();
-            DataOutputStream localDataOutputStream = new DataOutputStream((OutputStream) localObject);
-            String str = String.valueOf(paramString);
-            localObject = str + "\n";
-            localDataOutputStream.writeBytes((String) localObject);
-            localDataOutputStream.flush();
-            localDataOutputStream.writeBytes("exit\n");
-            localDataOutputStream.flush();
-            localProcess.waitFor();
-            int result = localProcess.exitValue();
-            return (Integer) result;
-        }
-		catch (Exception localException)
-		{
-            localException.printStackTrace();
-            return -1;
-        }
-    }
 
 	public static int getKeyCodeUp(SharedPreferences sp)
 	{

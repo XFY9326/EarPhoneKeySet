@@ -2,13 +2,14 @@ package tool.xfy9326.earphonekey;
 
 import android.app.*;
 import android.content.*;
-import android.os.*;
-import android.preference.*;
-import android.provider.*;
 import android.view.*;
-import android.view.View.*;
 import android.widget.*;
-import java.io.*;
+
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.provider.Settings;
+import android.view.View.OnClickListener;
+import java.io.IOException;
 
 public class GuideSetActivity extends Activity
 {
@@ -115,75 +116,74 @@ public class GuideSetActivity extends Activity
 		Button recorrect = (Button) findViewById(R.id.button_recorrect);
 		Button attention = (Button) findViewById(R.id.button_attention);
 		Button advanced = (Button) findViewById(R.id.button_advanced);
-		TextView root_get = (TextView) findViewById(R.id.textview_root_get);
 		TextView service_run = (TextView) findViewById(R.id.textview_service_run);
-		if (Methods.haveRoot())
+		if (!Methods.isAccessibilitySettingsOn(this))
 		{
-			if (!Methods.isRoot())
-			{
-				root_get.setVisibility(View.GONE);
-			}
-			if (!Methods.isAccessibilitySettingsOn(this))
-			{
-				service_run.setVisibility(View.GONE);
-			}
-			root.setOnClickListener(new OnClickListener(){
-					public void onClick(View v)
+			service_run.setVisibility(View.GONE);
+		}
+		root.setOnClickListener(new OnClickListener(){
+				public void onClick(View v)
+				{
+					if (Methods.isRoot())
 					{
-						try
-						{
-							Runtime.getRuntime().exec("su");
-						}
-						catch (IOException e)
-						{
-							e.printStackTrace();
-						}
+						startService(new Intent(GuideSetActivity.this, EarPhoneSetService.class).putExtra("ProcessChange", true));
 					}
-				});
-			service.setOnClickListener(new OnClickListener(){
-					public void onClick(View v)
+				}
+			});
+		service.setOnClickListener(new OnClickListener(){
+				public void onClick(View v)
+				{
+					Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+					startActivityForResult(intent, AccessibilityService_Ask_Code);
+				}
+			});
+		recorrect.setOnClickListener(new OnClickListener(){
+				public void onClick(View v)
+				{
+					if (Methods.isAccessibilitySettingsOn(GuideSetActivity.this))
 					{
-						Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-						startActivityForResult(intent, AccessibilityService_Ask_Code);
+						Toast.makeText(GuideSetActivity.this, R.string.recorrect_error, Toast.LENGTH_SHORT).show();
 					}
-				});
-			recorrect.setOnClickListener(new OnClickListener(){
-					public void onClick(View v)
+					else
 					{
-						if (Methods.isAccessibilitySettingsOn(GuideSetActivity.this))
-						{
-							Toast.makeText(GuideSetActivity.this, R.string.recorrect_error, Toast.LENGTH_SHORT).show();
-						}
-						else
-						{
-							checkmode = true;
-							upcheck = false;
-							downcheck = false;
-							setEarPhoneDevice(true);
-						}
+						checkmode = true;
+						upcheck = false;
+						downcheck = false;
+						setEarPhoneDevice(true);
 					}
-				});
-			attention.setOnClickListener(new OnClickListener(){
-					public void onClick(View v)
-					{
-						Methods.showAttention(GuideSetActivity.this);
-					}
-				});
-			advanced.setOnClickListener(new OnClickListener(){
-					public void onClick(View v)
+				}
+			});
+		attention.setOnClickListener(new OnClickListener(){
+				public void onClick(View v)
+				{
+					Methods.showAttention(GuideSetActivity.this);
+				}
+			});
+		advanced.setOnClickListener(new OnClickListener(){
+				public void onClick(View v)
+				{
+					if (Methods.isRoot())
 					{
 						Methods.showAdvancedFuntion(GuideSetActivity.this);
+						if (!sp.getBoolean("AdvancedFunctionOn", false))
+						{
+							sped.putBoolean("AdvancedFunctionOn", true);
+							sped.commit();
+							startService(new Intent(GuideSetActivity.this, EarPhoneSetService.class).putExtra("ProcessChange", true));
+						}
 					}
-				});
-		}
-		else
-		{
-			root.setEnabled(false);
-			service.setEnabled(false);
-			root_get.setVisibility(View.GONE);
-			service_run.setVisibility(View.GONE);
-			Toast.makeText(this, R.string.device_no_root, Toast.LENGTH_LONG).show();
-		}
+					else
+					{
+						if (sp.getBoolean("AdvancedFunctionOn", false))
+						{
+							sped.putBoolean("AdvancedFunctionOn", false);
+							sped.commit();
+							startService(new Intent(GuideSetActivity.this, EarPhoneSetService.class).putExtra("ProcessChange", true));
+						}
+						Toast.makeText(GuideSetActivity.this, R.string.device_no_root, Toast.LENGTH_LONG).show();
+					}
+				}
+			});
 	}
 
 	@Override
