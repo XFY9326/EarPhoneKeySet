@@ -123,8 +123,12 @@ public class Methods
 
 	public static DataOutputStream getStream(Process p)
 	{
-		DataOutputStream o = new DataOutputStream(p.getOutputStream());
-		return o;
+		if (p != null)
+		{
+			DataOutputStream o = new DataOutputStream(p.getOutputStream());
+			return o;
+		}
+		return null;
 	}
 
 	public static void closeRuntime(Process p, DataOutputStream o)
