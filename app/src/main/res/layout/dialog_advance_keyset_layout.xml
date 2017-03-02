@@ -106,33 +106,6 @@
 			android:layout_height="wrap_content"
 			android:textAppearance="?android:attr/textAppearanceSmall"
 			android:layout_width="wrap_content"
-			android:text="@string/advanced_longpress_get"
-			android:layout_alignParentLeft="true"
-			android:layout_centerVertical="true"
-			android:layout_marginLeft="10dp"
-			android:layout_marginRight="60dp"/>
-
-		<CheckBox
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
-			android:layout_alignParentRight="true"
-			android:layout_marginRight="10dp"
-			android:id="@+id/checkbox_longpress_get"/>
-
-	</RelativeLayout>
-
-	<View
-		android:layout_height="10dp"
-		android:layout_width="match_parent"/>
-
-	<RelativeLayout
-		android:layout_height="wrap_content"
-		android:layout_width="match_parent">
-
-		<TextView
-			android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceSmall"
-			android:layout_width="wrap_content"
 			android:text="@string/advanced_longpress_custom"
 			android:layout_alignParentLeft="true"
 			android:layout_centerVertical="true"

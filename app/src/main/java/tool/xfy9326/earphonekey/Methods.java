@@ -21,11 +21,9 @@ public class Methods
 		final EditText up = (EditText) layout.findViewById(R.id.edittext_up_key);
 		final EditText down = (EditText) layout.findViewById(R.id.edittext_down_key);
 		final CheckBox send = (CheckBox) layout.findViewById(R.id.checkbox_longpress_send);
-		final CheckBox get = (CheckBox) layout.findViewById(R.id.checkbox_longpress_get);
 		final CheckBox custom = (CheckBox) layout.findViewById(R.id.checkbox_longpress_custom);
 		custom.setChecked(sp.getBoolean("LongPress_Custom", false));
 		send.setChecked(sp.getBoolean("LongPress_Send", false));
-		get.setChecked(sp.getBoolean("LongPress_Get", false));
 		up.setText(sp.getInt("CustomCode_UP", KeyEvent.KEYCODE_MEDIA_PREVIOUS) + "");
 		down.setText(sp.getInt("CustomCode_DOWN", KeyEvent.KEYCODE_MEDIA_NEXT) + "");
 		AlertDialog.Builder dialog = new AlertDialog.Builder(ctx);
@@ -41,7 +39,6 @@ public class Methods
 					{
 						sped.putBoolean("LongPress_Custom", custom.isChecked());
 						sped.putBoolean("LongPress_Send", send.isChecked());
-						sped.putBoolean("LongPress_Get", get.isChecked());
 						sped.putInt("CustomCode_UP", Integer.parseInt(up.getText().toString()));
 						sped.putInt("CustomCode_DOWN", Integer.parseInt(down.getText().toString()));
 						sped.commit();
@@ -227,7 +224,7 @@ public class Methods
 	{
 		try
 		{
-			Process process  = Runtime.getRuntime().exec("su");
+			Process process = Runtime.getRuntime().exec("su");
 			process.getOutputStream().write("exit\n".getBytes());
 			process.getOutputStream().flush();
 			int i = process.waitFor();

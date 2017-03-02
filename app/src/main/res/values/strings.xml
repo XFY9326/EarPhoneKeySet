@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">EarPhone Key Set</string>
-    <string name="service_describe">Open this service to enable three key earphone change music by press up or down key.\nAdvanced Functions need also give the root permission!</string>
+    <string name="service_describe">Open this service to enable three key earphone\nchange music by press up or down key.\nAdvanced Functions need also give the root permission!</string>
+	<string name="app_describe">This application will enble three key earphone change music by press up or down key.</string>
 	<string name="guide_title">Please Set These Before You Use!</string>
 	<string name="guide_check">Correct Your EarPhone</string>
 	<string name="guide_check_up">Click the button on your earphone which means volume UP.</string>

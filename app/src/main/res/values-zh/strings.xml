@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">耳机按键设置</string>
     <string name="service_describe">打开这个服务以允许三键耳机通过音量上下键控制音乐上一首或下一首。\n高级功能需要授予ROOT权限。</string>
+	<string name="app_describe">本应用可以使三键耳机\n通过音量上下键控制音乐播放</string>
 	<string name="guide_title">请在使用前进行如下设置！</string>
 	<string name="guide_check">耳机按键校准</string>
 	<string name="guide_check_up">按下你耳机上用于增强音量的按键。</string>

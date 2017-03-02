@@ -75,6 +75,7 @@ public class EarPhoneSetService extends AccessibilityService
 			{
 				if (sp.getBoolean("AdvancedFunctionOn", false))
 				{
+					runtime = Runtime.getRuntime();
 					process = Methods.getRootProcess(runtime);
 				}
 				else

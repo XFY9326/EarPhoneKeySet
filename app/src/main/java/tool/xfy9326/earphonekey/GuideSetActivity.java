@@ -117,6 +117,8 @@ public class GuideSetActivity extends Activity
 		Button attention = (Button) findViewById(R.id.button_attention);
 		Button advanced = (Button) findViewById(R.id.button_advanced);
 		TextView service_run = (TextView) findViewById(R.id.textview_service_run);
+		CheckBox get = (CheckBox) findViewById(R.id.checkbox_longpress_get);
+		get.setChecked(sp.getBoolean("LongPress_Get", false));
 		if (!Methods.isAccessibilitySettingsOn(this))
 		{
 			service_run.setVisibility(View.GONE);
@@ -137,6 +139,13 @@ public class GuideSetActivity extends Activity
 					startActivityForResult(intent, AccessibilityService_Ask_Code);
 				}
 			});
+		get.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+			public void onCheckedChanged(CompoundButton button, boolean b)
+			{
+				sped.putBoolean("LongPress_Get", b);
+				sped.commit();
+			}
+		});
 		recorrect.setOnClickListener(new OnClickListener(){
 				public void onClick(View v)
 				{
