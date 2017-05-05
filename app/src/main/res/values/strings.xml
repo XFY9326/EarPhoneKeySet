@@ -5,8 +5,8 @@
 	<string name="app_describe">This application will enble three key earphone change music by press up or down key.</string>
 	<string name="guide_title">Please Set These Before You Use!</string>
 	<string name="guide_check">Correct Your EarPhone</string>
-	<string name="guide_check_up">Click the button on your earphone which means volume UP.</string>
-	<string name="guide_check_down">Click the button on your earphone which means volume DOWN.</string>
+	<string name="guide_check_up">Click the button on your earphone which means volume UP</string>
+	<string name="guide_check_down">Click the button on your earphone which means volume DOWN</string>
 	<string name="guide_check_error">You may click a wrong button.\nCurrent Key:</string>
 	<string name="guide_first_text">Must:Run the AccessibilityService</string>
 	<string name="guide_second_text">Choose:Give Root Premission</string>

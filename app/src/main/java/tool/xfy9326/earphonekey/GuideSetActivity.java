@@ -43,12 +43,11 @@ public class GuideSetActivity extends Activity
 	{
 		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 		dialog.setTitle(R.string.guide_check);
-		final TextView notice = new TextView(this);
+		LayoutInflater inflater = LayoutInflater.from(this);
+		View layout = inflater.inflate(R.layout.dialog_guide_earphone_correct, null);
+		final TextView notice = (TextView) layout.findViewById(R.id.textview_earphone_correct_info);
 		notice.setText(R.string.guide_check_up);
-		notice.setPadding(60, 90, 30, 50);
-		notice.setTextSize(18);
-		notice.setGravity(Gravity.FILL_HORIZONTAL);
-		dialog.setView(notice);
+		dialog.setView(layout);
 		dialog.setCancelable(false);
 		if (allowcancel)
 		{

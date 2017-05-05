@@ -11,7 +11,7 @@
 		android:text="@string/guide_title"
 		android:id="@+id/textview_title"
 		android:layout_centerHorizontal="true"
-		android:layout_marginTop="20dp"/>
+		android:padding="10dp"/>
 
 	<LinearLayout
 		android:layout_height="wrap_content"
@@ -35,9 +35,11 @@
 
 		<Button
 			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
+			android:layout_width="match_parent"
 			android:text="@string/guide_first_text_button"
-			android:id="@+id/button_service"/>
+			android:id="@+id/button_service"
+			android:layout_marginLeft="25dp"
+			android:layout_marginRight="25dp"/>
 
 		<TextView
 			android:layout_height="wrap_content"
@@ -69,9 +71,11 @@
 
 		<Button
 			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
+			android:layout_width="match_parent"
 			android:text="@string/guide_second_text_button"
-			android:id="@+id/button_root"/>
+			android:id="@+id/button_root"
+			android:layout_marginLeft="25dp"
+			android:layout_marginRight="25dp"/>
 
 	</LinearLayout>
 

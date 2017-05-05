@@ -5,8 +5,8 @@
 	<string name="app_describe">本应用可以使三键耳机\n通过音量上下键控制音乐播放</string>
 	<string name="guide_title">请在使用前进行如下设置！</string>
 	<string name="guide_check">耳机按键校准</string>
-	<string name="guide_check_up">按下你耳机上用于增强音量的按键。</string>
-	<string name="guide_check_down">按下你耳机上用于减弱音量的按键。</string>
+	<string name="guide_check_up">按下你耳机上用于增强音量的按键</string>
+	<string name="guide_check_down">按下你耳机上用于减弱音量的按键</string>
 	<string name="guide_check_error">你可能按错了按键\n当前按键：</string>
 	<string name="guide_first_text">必须：运行辅助服务</string>
 	<string name="guide_second_text">可选：授予ROOT权限</string>
