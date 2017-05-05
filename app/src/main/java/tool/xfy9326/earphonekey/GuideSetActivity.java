@@ -39,7 +39,7 @@ public class GuideSetActivity extends Activity
 		setView();
 	}
 
-	private void setEarPhoneDevice(boolean allowcancel)
+	private void setEarPhoneDevice(boolean back_and_not_exit)
 	{
 		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 		dialog.setTitle(R.string.guide_check);
@@ -49,12 +49,22 @@ public class GuideSetActivity extends Activity
 		notice.setText(R.string.guide_check_up);
 		dialog.setView(layout);
 		dialog.setCancelable(false);
-		if (allowcancel)
+		if (back_and_not_exit)
 		{
 			dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
 					public void onClick(DialogInterface d, int i)
 					{
 						check.dismiss();
+					}
+				});
+		}
+		else
+		{
+			dialog.setNegativeButton(R.string.exit, new DialogInterface.OnClickListener(){
+					public void onClick(DialogInterface d, int i)
+					{
+						GuideSetActivity.this.finish();
+						System.exit(0);
 					}
 				});
 		}

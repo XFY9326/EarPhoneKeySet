@@ -33,5 +33,6 @@
 	<string name="done">Done</string>
 	<string name="cancel">Cancel</string>
 	<string name="reset">Reset</string>
+	<string name="exit">Exit</string>
 	<string name="author">Made by XFY9326\nhttps://github.com/XFY9326/EarPhoneKeySet</string>
 </resources>

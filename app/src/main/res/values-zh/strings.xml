@@ -33,5 +33,6 @@
 	<string name="done">确认</string>
 	<string name="cancel">取消</string>
 	<string name="reset">重置</string>
+	<string name="exit">退出</string>
 	<string name="author">制作者 XFY9326\nhttps://github.com/XFY9326/EarPhoneKeySet</string>
 </resources>
