@@ -9,7 +9,7 @@
 	<string name="guide_check_down">Click the button on your earphone which means volume DOWN</string>
 	<string name="guide_check_error">You may click a wrong button.\nCurrent Key:</string>
 	<string name="guide_first_text">Must:Run the AccessibilityService</string>
-	<string name="guide_second_text">Choose:Give Root Premission</string>
+	<string name="guide_second_text">Choose:Give Root Permission</string>
 	<string name="guide_first_text_button">Run</string>
 	<string name="guide_second_text_button">Give</string>
 	<string name="service_run">Accessibility Service is running!</string>
@@ -35,4 +35,5 @@
 	<string name="reset">Reset</string>
 	<string name="exit">Exit</string>
 	<string name="author">Made by XFY9326\nhttps://github.com/XFY9326/EarPhoneKeySet</string>
+	<string name="keycode">KeyCode</string>
 </resources>

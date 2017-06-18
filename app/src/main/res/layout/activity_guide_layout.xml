@@ -1,175 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_height="match_parent"
-	android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
 	<TextView
-		android:layout_height="wrap_content"
-		android:textAppearance="?android:attr/textAppearanceLarge"
-		android:layout_width="wrap_content"
-		android:text="@string/guide_title"
 		android:id="@+id/textview_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
 		android:layout_centerHorizontal="true"
-		android:padding="10dp"/>
+        android:padding="10dp"
+        android:text="@string/guide_title"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 	<LinearLayout
-		android:layout_height="wrap_content"
+        android:id="@+id/guide_layout_1"
 		android:layout_width="match_parent"
-		android:orientation="vertical"
-		android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
 		android:layout_below="@id/textview_title"
+        android:layout_centerHorizontal="true"
 		android:layout_marginTop="30dp"
-		android:id="@+id/guide_layout_1"
-		android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
 
 		<TextView
-			android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceMedium"
 			android:layout_width="wrap_content"
-			android:text="@string/guide_first_text"/>
+            android:layout_height="wrap_content"
+            android:text="@string/guide_first_text"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
 		<View
-			android:layout_height="15dp"
-			android:layout_width="match_parent"/>
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
 
 		<Button
-			android:layout_height="wrap_content"
-			android:layout_width="match_parent"
-			android:text="@string/guide_first_text_button"
 			android:id="@+id/button_service"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 			android:layout_marginLeft="25dp"
-			android:layout_marginRight="25dp"/>
+            android:layout_marginRight="25dp"
+            android:text="@string/guide_first_text_button" />
 
 		<TextView
-			android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/textview_service_run"
 			android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 			android:text="@string/service_run"
-			android:id="@+id/textview_service_run"/>
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
 	</LinearLayout>
 
 	<LinearLayout
-		android:layout_height="wrap_content"
+        android:id="@+id/guide_layout_2"
 		android:layout_width="match_parent"
-		android:orientation="vertical"
+        android:layout_height="wrap_content"
 		android:layout_below="@id/guide_layout_1"
-		android:id="@+id/guide_layout_2"
+        android:layout_marginTop="30dp"
 		android:gravity="center"
-		android:layout_marginTop="30dp">
+        android:orientation="vertical">
 
 		<TextView
-			android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceMedium"
 			android:layout_width="wrap_content"
-			android:text="@string/guide_second_text"/>
+            android:layout_height="wrap_content"
+            android:text="@string/guide_second_text"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
 		<View
-			android:layout_height="15dp"
-			android:layout_width="match_parent"/>
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
 
 		<Button
-			android:layout_height="wrap_content"
-			android:layout_width="match_parent"
-			android:text="@string/guide_second_text_button"
 			android:id="@+id/button_root"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 			android:layout_marginLeft="25dp"
-			android:layout_marginRight="25dp"/>
+            android:layout_marginRight="25dp"
+            android:text="@string/guide_second_text_button" />
 
 	</LinearLayout>
 
 	<TextView
-		android:layout_height="wrap_content"
+        android:id="@+id/textview_describe"
 		android:layout_width="match_parent"
-		android:text="@string/app_describe"
+        android:layout_height="wrap_content"
 		android:layout_below="@id/guide_layout_2"
-		android:padding="10dp"
-		android:id="@+id/textview_describe"
 		android:layout_marginTop="15dp"
-		android:textSize="15sp"
-		android:gravity="center"/>
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/app_describe"
+        android:textSize="15sp" />
 
 	<RelativeLayout
 		android:id="@+id/guide_layout_3"
-		android:layout_below="@id/textview_describe"
-		android:layout_height="wrap_content"
 		android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textview_describe"
 		android:layout_marginTop="15dp"
 		android:gravity="center">
 
 		<TextView
-			android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceSmall"
 			android:layout_width="200dp"
-			android:text="@string/advanced_longpress_get"
+            android:layout_height="wrap_content"
 			android:layout_centerVertical="true"
-			android:layout_marginLeft="20dp"
-			android:padding="10dp"/>
+            android:layout_marginStart="20dp"
+            android:padding="10dp"
+            android:text="@string/advanced_longpress_get"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
 		<CheckBox
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
 			android:id="@+id/checkbox_longpress_get"
-			android:layout_alignParentRight="true"
-			android:layout_marginRight="20dp"
-			android:layout_centerVertical="true"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="20dp" />
 
 	</RelativeLayout>
 
 	<LinearLayout
-		android:layout_height="wrap_content"
 		android:layout_width="wrap_content"
-		android:layout_alignParentRight="false"
+        android:layout_height="wrap_content"
 		android:layout_alignParentBottom="false"
+        android:layout_alignParentEnd="false"
 		android:layout_below="@id/guide_layout_3"
-		android:orientation="horizontal"
 		android:layout_centerHorizontal="true"
-		android:layout_marginTop="15dp">
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal">
 
 		<Button
+            android:id="@+id/button_recorrect"
 			style="?android:attr/buttonStyleSmall"
-			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
-			android:id="@+id/button_recorrect"
-			android:text="@string/recorrect"
-			android:layout_weight="2.0"/>
+            android:layout_height="wrap_content"
+            android:layout_weight="2.0"
+            android:text="@string/recorrect" />
 
 		<View
-			android:layout_height="match_parent"
-			android:layout_width="5dp"/>
+            android:layout_width="5dp"
+            android:layout_height="match_parent" />
 
 		<Button
+            android:id="@+id/button_attention"
 			style="?android:attr/buttonStyleSmall"
-			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
-			android:id="@+id/button_attention"
-			android:text="@string/attention_title"
-			android:layout_weight="1.0"/>
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:text="@string/attention_title" />
 
 		<View
-			android:layout_height="match_parent"
-			android:layout_width="5dp"/>
+            android:layout_width="5dp"
+            android:layout_height="match_parent" />
 
 		<Button
+            android:id="@+id/button_advanced"
 			style="?android:attr/buttonStyleSmall"
-			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
-			android:id="@+id/button_advanced"
-			android:text="@string/advanced_button"
-			android:layout_weight="1.0"/>
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:text="@string/advanced_button" />
 
 	</LinearLayout>
 
 	<TextView
-		android:layout_height="wrap_content"
-		android:textAppearance="?android:attr/textAppearanceSmall"
 		android:layout_width="wrap_content"
-		android:text="@string/author"
+        android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
 		android:layout_centerHorizontal="true"
 		android:layout_marginBottom="5dp"
-		android:gravity="center"/>
+        android:gravity="center"
+        android:text="@string/author"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>
 

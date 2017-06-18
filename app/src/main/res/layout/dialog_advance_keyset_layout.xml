@@ -1,135 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_custom_keycode"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
+    android:gravity="top|center"
 	android:orientation="vertical"
-	android:padding="10dp"
-	android:gravity="top|center">
+    android:padding="10dp">
 
 	<RelativeLayout
-		android:layout_height="wrap_content"
-		android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
 		<TextView
-			android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/dialog_textview_1"
 			android:layout_width="wrap_content"
-			android:text="@string/advanved_up"
-			android:layout_alignParentLeft="true"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
 			android:layout_centerVertical="true"
-			android:layout_marginLeft="10dp"
-			android:id="@+id/dialog_textview_1"/>
+            android:layout_marginStart="10dp"
+            android:text="@string/advanved_up"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
 		<EditText
-			android:layout_height="wrap_content"
-			android:inputType="number"
+            android:id="@+id/edittext_up_key"
 			android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/dialog_textview_1"
 			android:ems="7"
-			android:layout_alignParentRight="true"
-			android:layout_marginRight="10dp"
-			android:layout_toRightOf="@id/dialog_textview_1"
-			android:layout_marginLeft="10dp"
-			android:id="@+id/edittext_up_key"
-			android:hint="KeyCode"/>
+            android:hint="@string/keycode"
+            android:inputType="number" />
 
 	</RelativeLayout>
 
 	<View
-		android:layout_height="10dp"
-		android:layout_width="match_parent"/>
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
 
 	<RelativeLayout
-		android:layout_height="wrap_content"
-		android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
 		<TextView
-			android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/dialog_textview_2"
 			android:layout_width="wrap_content"
-			android:text="@string/advanced_down"
-			android:layout_alignParentLeft="true"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
 			android:layout_centerVertical="true"
-			android:layout_marginLeft="10dp"
-			android:id="@+id/dialog_textview_2"/>
+            android:layout_marginStart="10dp"
+            android:text="@string/advanced_down"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
 		<EditText
-			android:layout_height="wrap_content"
-			android:inputType="number"
+            android:id="@+id/edittext_down_key"
 			android:layout_width="wrap_content"
-			android:ems="7"
-			android:layout_alignParentRight="true"
-			android:layout_marginRight="10dp"
-			android:layout_toRightOf="@id/dialog_textview_2"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
 			android:layout_marginLeft="10dp"
-			android:id="@+id/edittext_down_key"
-			android:hint="KeyCode"/>
+            android:layout_marginRight="10dp"
+            android:layout_toEndOf="@id/dialog_textview_2"
+            android:ems="7"
+            android:hint="@string/keycode"
+            android:inputType="number" />
 
 	</RelativeLayout>
 
 	<View
-		android:layout_height="10dp"
-		android:layout_width="match_parent"/>
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
 
 	<RelativeLayout
-		android:layout_height="wrap_content"
-		android:layout_width="match_parent">
-
-		<TextView
-			android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceSmall"
-			android:layout_width="wrap_content"
-			android:text="@string/advanced_longpress_send"
-			android:layout_alignParentLeft="true"
-			android:layout_centerVertical="true"
-			android:layout_marginLeft="10dp"
-			android:layout_marginRight="60dp"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
 		<CheckBox
-			android:layout_height="wrap_content"
+            android:id="@+id/checkbox_longpress_send"
 			android:layout_width="wrap_content"
-			android:layout_alignParentRight="true"
-			android:layout_marginRight="10dp"
-			android:id="@+id/checkbox_longpress_send"/>
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:text="@string/advanced_longpress_send" />
 
 	</RelativeLayout>
 
 	<View
-		android:layout_height="10dp"
-		android:layout_width="match_parent"/>
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
 
 	<RelativeLayout
-		android:layout_height="wrap_content"
-		android:layout_width="match_parent">
-
-		<TextView
-			android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceSmall"
-			android:layout_width="wrap_content"
-			android:text="@string/advanced_longpress_custom"
-			android:layout_alignParentLeft="true"
-			android:layout_centerVertical="true"
-			android:layout_marginLeft="10dp"
-			android:layout_marginRight="60dp"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
 		<CheckBox
-			android:layout_height="wrap_content"
+            android:id="@+id/checkbox_longpress_custom"
 			android:layout_width="wrap_content"
-			android:layout_alignParentRight="true"
-			android:layout_marginRight="10dp"
-			android:id="@+id/checkbox_longpress_custom"/>
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:text="@string/advanced_longpress_custom" />
 
 	</RelativeLayout>
 	
 	<View
-		android:layout_height="10dp"
-		android:layout_width="match_parent"/>
+        android:layout_width="match_parent"
+        android:layout_height="15dp" />
 
 	<TextView
-		android:layout_height="wrap_content"
-		android:textAppearance="?android:attr/textAppearanceSmall"
 		android:layout_width="wrap_content"
-		android:text="@string/advanced_attention"/>
+        android:layout_height="wrap_content"
+        android:text="@string/advanced_attention"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </LinearLayout>
 
