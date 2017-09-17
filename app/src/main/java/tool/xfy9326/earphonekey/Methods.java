@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 class Methods {
-    public static void showAdvancedFuntion(final Activity ctx) {
+    static void showAdvancedFunction(final Activity ctx) {
         LayoutInflater inflater = LayoutInflater.from(ctx);
         View layout = inflater.inflate(R.layout.dialog_advance_keyset_layout, (ViewGroup) ctx.findViewById(R.id.layout_custom_keycode));
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
@@ -89,20 +89,20 @@ class Methods {
         return result;
     }
 
-    public static boolean isHeadSetUse(Context ctx) {
+    static boolean isHeadSetUse(Context ctx) {
         IntentFilter iFilter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
         Intent iStatus = ctx.registerReceiver(null, iFilter);
         return (iStatus != null ? iStatus.getIntExtra("state", 0) : 0) == 1;
     }
 
-    public static void showAttention(Context ctx) {
+    static void showAttention(Context ctx) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(ctx);
         dialog.setTitle(R.string.attention_title);
         dialog.setMessage(R.string.attention_msg);
         dialog.show();
     }
 
-    public static Process getRootProcess(Runtime r) {
+    static Process getRootProcess(Runtime r) {
         Process p;
         try {
             p = r.exec("su");
@@ -113,14 +113,14 @@ class Methods {
         return p;
     }
 
-    public static DataOutputStream getStream(Process p) {
+    static DataOutputStream getStream(Process p) {
         if (p != null) {
             return new DataOutputStream(p.getOutputStream());
         }
         return null;
     }
 
-    public static void closeRuntime(Process p, DataOutputStream o) {
+    static void closeRuntime(Process p, DataOutputStream o) {
         try {
             if (o != null) {
                 o.writeBytes("exit\n");
@@ -132,7 +132,7 @@ class Methods {
         }
     }
 
-    public static void sendKeyCode(Context ctx, final int keyCode, final Process p, final DataOutputStream o, final boolean longpress) {
+    static void sendKeyCode(Context ctx, final int keyCode, final Process p, final DataOutputStream o, final boolean longpress) {
         if (keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS && !longpress) {
             MediaButtonControl(ctx, KeyEvent.KEYCODE_MEDIA_PREVIOUS);
         } else if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT && !longpress) {
@@ -169,7 +169,7 @@ class Methods {
         am.dispatchMediaKeyEvent(ky_up);
     }
 
-    public static boolean isAccessibilitySettingsOn(Context context) {
+    static boolean isAccessibilitySettingsOn(Context context) {
         int accessibilityEnabled = 0;
         try {
             accessibilityEnabled = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.ACCESSIBILITY_ENABLED);
@@ -185,7 +185,7 @@ class Methods {
         return false;
     }
 
-    public static boolean isRoot() {
+    static boolean isRoot() {
         try {
             Process process = Runtime.getRuntime().exec("su");
             process.getOutputStream().write("exit\n".getBytes());
@@ -201,23 +201,23 @@ class Methods {
         return false;
     }
 
-    public static int getKeyCodeUp(SharedPreferences sp) {
+    static int getKeyCodeUp(SharedPreferences sp) {
         return sp.getInt("CustomCode_UP", KeyEvent.KEYCODE_MEDIA_PREVIOUS);
     }
 
-    public static int getKeyCodeDown(SharedPreferences sp) {
+    static int getKeyCodeDown(SharedPreferences sp) {
         return sp.getInt("CustomCode_DOWN", KeyEvent.KEYCODE_MEDIA_NEXT);
     }
 
-    public static boolean getLongPressSend(SharedPreferences sp) {
+    static boolean getLongPressSend(SharedPreferences sp) {
         return sp.getBoolean("LongPress_Send", false);
     }
 
-    public static boolean getLongPressGet(SharedPreferences sp) {
+    static boolean getLongPressGet(SharedPreferences sp) {
         return sp.getBoolean("LongPress_Get", false);
     }
 
-    public static boolean getLongPressCustom(SharedPreferences sp) {
+    static boolean getLongPressCustom(SharedPreferences sp) {
         return sp.getBoolean("LongPress_Custom", false);
     }
 }

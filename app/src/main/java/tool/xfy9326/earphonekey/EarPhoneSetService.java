@@ -1,6 +1,7 @@
 package tool.xfy9326.earphonekey;
 
 import android.accessibilityservice.AccessibilityService;
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -190,6 +191,7 @@ public class EarPhoneSetService extends AccessibilityService {
         Methods.closeRuntime(process, output);
     }
 
+    @SuppressLint("HandlerLeak")
     private class MsgHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {

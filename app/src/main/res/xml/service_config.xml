@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<accessibility-service 
-	xmlns:android="http://schemas.android.com/apk/res/android"
-    android:description="@string/service_describe"
+<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
     android:accessibilityEventTypes="typeAllMask"
+    android:accessibilityFeedbackType="feedbackGeneric"
     android:accessibilityFlags="flagRequestFilterKeyEvents"
-	android:accessibilityFeedbackType="feedbackGeneric"
-	android:canRequestFilterKeyEvents="true"
-    android:notificationTimeout="100"/>
+    android:canRequestFilterKeyEvents="true"
+    android:description="@string/service_describe"
+    android:notificationTimeout="100" />

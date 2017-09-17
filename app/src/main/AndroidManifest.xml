@@ -1,44 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="tool.xfy9326.earphonekey" >
-	
-	<uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    xmlns:tools="http://schemas.android.com/tools"
+    package="tool.xfy9326.earphonekey">
+
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
-		
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <application
         android:allowBackup="true"
         android:exported="true"
         android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
-		
-		<activity
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+
+        <activity
             android:name="GuideSetActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
-			android:screenOrientation="portrait">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-		
-		<service
-			android:name="EarPhoneSetService"
-			android:label="@string/app_name"
+
+        <service
+            android:name="EarPhoneSetService"
+            android:label="@string/app_name"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
             android:persistent="true">
-			<intent-filter>
+            <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
-			<meta-data
+            <meta-data
                 android:name="android.accessibilityservice"
-				android:resource="@xml/service_config" >
-			</meta-data>
-		</service>
-		
+                android:resource="@xml/service_config" />
+        </service>
+
     </application>
-	
+
 </manifest>

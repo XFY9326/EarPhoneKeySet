@@ -2,6 +2,7 @@ package tool.xfy9326.earphonekey;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,6 +28,7 @@ public class GuideSetActivity extends Activity {
     private boolean checkmode;
     private boolean upcheck;
     private boolean downcheck;
+    private boolean specialKeyMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,7 @@ public class GuideSetActivity extends Activity {
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         sped = sp.edit();
         sped.apply();
+        specialKeyMode = sp.getBoolean("SpecialKeyMode", false);
         checkmode = sp.getBoolean("CheckEarPhone", false);
         if (!checkmode) {
             checkmode = true;
@@ -68,6 +71,15 @@ public class GuideSetActivity extends Activity {
                 }
             });
         }
+        if (!specialKeyMode) {
+            dialog.setNeutralButton(R.string.guide_check_special_key, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    showSpecialKeyAlert(GuideSetActivity.this);
+                    check.dismiss();
+                }
+            });
+        }
         dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
             public boolean onKey(DialogInterface d, int i, KeyEvent e) {
                 int keyCode = e.getKeyCode();
@@ -75,7 +87,7 @@ public class GuideSetActivity extends Activity {
                 if (checkmode && action == KeyEvent.ACTION_UP) {
                     if (Methods.isHeadSetUse(GuideSetActivity.this)) {
                         if (!upcheck) {
-                            if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
+                            if (specialKeyMode || keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
                                 sped.putInt("KeyCode_UP", e.getScanCode());
                                 sped.commit();
                                 upcheck = true;
@@ -84,7 +96,7 @@ public class GuideSetActivity extends Activity {
                                 Toast.makeText(GuideSetActivity.this, getString(R.string.guide_check_error) + KeyEvent.keyCodeToString(keyCode) + "(" + keyCode + ")", Toast.LENGTH_SHORT).show();
                             }
                         } else if (!downcheck) {
-                            if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
+                            if (specialKeyMode || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
                                 sped.putInt("KeyCode_DOWN", e.getScanCode());
                                 sped.putBoolean("CheckEarPhone", true);
                                 sped.commit();
@@ -95,7 +107,7 @@ public class GuideSetActivity extends Activity {
                             }
                         }
                     } else {
-                        Toast.makeText(GuideSetActivity.this, R.string.earphone_nofound, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GuideSetActivity.this, R.string.earphone_not_found, Toast.LENGTH_SHORT).show();
                     }
                 }
                 return true;
@@ -104,10 +116,28 @@ public class GuideSetActivity extends Activity {
         check = dialog.show();
     }
 
+    private void showSpecialKeyAlert(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.guide_check_special_key);
+        builder.setMessage(R.string.guide_check_special_key_description);
+        builder.setCancelable(false);
+        builder.setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                specialKeyMode = true;
+                sped.putBoolean("SpecialKeyMode", true);
+                sped.apply();
+                setEarPhoneDevice(false);
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, null);
+        builder.show();
+    }
+
     private void setView() {
         Button root = (Button) findViewById(R.id.button_root);
         Button service = (Button) findViewById(R.id.button_service);
-        Button recorrect = (Button) findViewById(R.id.button_recorrect);
+        Button reset = (Button) findViewById(R.id.button_reset_earphone);
         Button attention = (Button) findViewById(R.id.button_attention);
         Button advanced = (Button) findViewById(R.id.button_advanced);
         TextView service_run = (TextView) findViewById(R.id.textview_service_run);
@@ -135,10 +165,10 @@ public class GuideSetActivity extends Activity {
                 sped.commit();
             }
         });
-        recorrect.setOnClickListener(new OnClickListener() {
+        reset.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 if (Methods.isAccessibilitySettingsOn(GuideSetActivity.this)) {
-                    Toast.makeText(GuideSetActivity.this, R.string.recorrect_error, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GuideSetActivity.this, R.string.reset_earphone_error, Toast.LENGTH_SHORT).show();
                 } else {
                     checkmode = true;
                     upcheck = false;
@@ -155,7 +185,7 @@ public class GuideSetActivity extends Activity {
         advanced.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 if (Methods.isRoot()) {
-                    Methods.showAdvancedFuntion(GuideSetActivity.this);
+                    Methods.showAdvancedFunction(GuideSetActivity.this);
                     if (!sp.getBoolean("AdvancedFunctionOn", false)) {
                         sped.putBoolean("AdvancedFunctionOn", true);
                         sped.commit();
